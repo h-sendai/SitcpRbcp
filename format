@@ -1,0 +1,41 @@
++-----------+-----------+
+|  Ver.     |  Type     |
++-----------------------+
+|  CMD      |  FLAG     |
++-----------------------+
+|           ID          |
++-----------------------+
+|      Data Length      |
++-----------------------+
+|    Address [31:24]    |
++-----------------------+
+|    Address [23:16]    |
++-----------------------+
+|    Address [15:8]     |
++-----------------------+
+|    Address [7:0]      |
++-----------------------+
+|         Data 0        |
++-----------------------+
+|         Data 1        |
++-----------------------+
+:                       :
+:                       :
++-----------------------+
+|         Data N        |
++-----------------------+
+
+Ver. : fixed (0xF)
+Type : fixed (0xF)
+CMD  : 0x c for read
+       0x 8 for write
+       bit 3 : Access (Bus Access)
+           2 : R/W 0: Write, 1: Read
+           1 : Reserved.  Always 0
+           0 : Reserved.  Always 0
+FLAG : bit 3 : REQ/ACK 0:Request, 1:Ack
+           2 : Reserved.  Always 0
+           1 : Reserved.  Always 0
+           0 : Error.     0: Normal, 1: Bus Error
+ID: Ack packet will have same ID the requester has sent.
+Data Length: More than 0 value.  Does not work if length = 0
