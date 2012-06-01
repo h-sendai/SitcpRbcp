@@ -21,6 +21,10 @@ read result is written in buf.
 Return value: = 0 if success.
               < 0 if failure.
 
+You may specify SiTCP RBCP header id as last argument:
+read_registers("192.168.0.16", address, length, buf, 100);
+Default id value is 1.
+
 ////////////////////////////////////////////////////////////////////////
 // Write Registers
 ////////////////////////////////////////////////////////////////////////
@@ -51,6 +55,10 @@ rbcp.write_registers("192.168.0.16", address, length, buf);
 Even if you do not specify set_verify_mode(), write_registers()
 examine the Ack packet data (but this does not mean the write
 was successfully done).
+
+You may specify SiTCP RBCP header id as last argument:
+write_registers("192.168.0.16", address, length, buf, 100);
+Default id value is 1.
 */ 
 
 #include <string>
@@ -77,13 +85,14 @@ public:
         std::string ip_address,
         int address,
         int length,
-        unsigned char *buf
-    );
-    int write_registers(
+        unsigned char *buf,
+        int id = 1
+    ); int write_registers(
         std::string ip_address,
         int address,
         int length,
-        unsigned char *buf
+        unsigned char *buf,
+        int id = 1
     );
     int set_verify_mode();
     int unset_verify_mode();
@@ -93,7 +102,7 @@ private:
     int pack_sitcp_rbcp_header(unsigned char *buf, struct sitcp_rbcp_header *header);
     int unpack_sitcp_rbcp_header(unsigned char *buf, struct sitcp_rbcp_header *header);
     int print_packet_error_message(int ret, std::string function_name, std::string ip_address);
-    int send_recv_command_packet(int command, std::string ip_address, int address, int length, unsigned char *buf);
+    int send_recv_command_packet(int command, std::string ip_address, int address, int length, unsigned char *buf, int id);
     int m_need_verify;
     const static int SITCP_RBCP_HEADER_LEN    = 8;
     const static unsigned char ACK_MASK       = 0x08;
@@ -155,7 +164,7 @@ int SitcpRbcp::print_packet_error_message(int ret, std::string function_name, st
     return 0;
 }
 
-int SitcpRbcp::send_recv_command_packet(int command, std::string ip_address, int address, int length, unsigned char *buf)
+int SitcpRbcp::send_recv_command_packet(int command, std::string ip_address, int address, int length, unsigned char *buf, int id)
 {
     int ret;
     struct sitcp_rbcp_header send_header, reply_header;
@@ -174,7 +183,7 @@ int SitcpRbcp::send_recv_command_packet(int command, std::string ip_address, int
         std::cerr << "Unknown command" << std::endl;
     }
 
-    send_header.id       = (char) 1;
+    send_header.id       = (char) id;
     send_header.length   = (char) length;
     send_header.address  = htonl(address);
 
@@ -255,27 +264,27 @@ int SitcpRbcp::send_recv_command_packet(int command, std::string ip_address, int
     return 0;
 }
 
-int SitcpRbcp::read_registers(std::string ip_address, int address, int length, unsigned char *buf)
+int SitcpRbcp::read_registers(std::string ip_address, int address, int length, unsigned char *buf, int id)
 {
     int ret;
 
-    ret = send_recv_command_packet(READ, ip_address, address, length, buf);
+    ret = send_recv_command_packet(READ, ip_address, address, length, buf, id);
     
     return ret;
 }
 
-int SitcpRbcp::write_registers(std::string ip_address, int address, int length, unsigned char *buf)
+int SitcpRbcp::write_registers(std::string ip_address, int address, int length, unsigned char *buf, int id)
 {
     int ret;
 
-    ret = send_recv_command_packet(WRITE, ip_address, address, length, buf);
+    ret = send_recv_command_packet(WRITE, ip_address, address, length, buf, id);
     if (ret < 0) {
         return ret;
     }
     
     if (m_need_verify == 1) {
         unsigned char re_read_buf[length];
-        ret = send_recv_command_packet(READ, ip_address, address, length, re_read_buf);
+        ret = send_recv_command_packet(READ, ip_address, address, length, re_read_buf, id);
         if (ret < 0) {
             std::cerr << "read for verification fail" << std::endl;
             return -1;

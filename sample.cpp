@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     address = 0x80;
     length  = 6;
     unsigned char mac[length];
-    if (bcp.read_registers("192.168.0.16", address , sizeof(mac), mac) < 0) {
+    if (bcp.read_registers("192.168.0.16", address , sizeof(mac), mac, 100) < 0) {
         return 1;
     }
 
