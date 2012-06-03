@@ -33,7 +33,7 @@ def write_registers(ip_address, address, length, data, id = 1):
     Read timeout of the reply packet is 2 seconds (fixed).
     """
 
-    rv = send_recv_command_packet('READ', ip_address, address, length, id)
+    rv = send_recv_command_packet('WRITE', ip_address, address, length, data, id)
     return rv
 
 def send_recv_command_packet(command, ip_address, address, length, data, id):
@@ -41,10 +41,10 @@ def send_recv_command_packet(command, ip_address, address, length, data, id):
     if (command == 'READ'):
         cmd_flag = 0xc0 # for read
     elif (command == 'WRITE'):
-        cmg_flag = 0x80
+        cmd_flag = 0x80
     else:
         raise("Unknown command (not READ nor WRITE) in send_recv_command_packet")
-    request_packet = struct.pack('>BBBBI', ver_type, cmd_flag, id, length, address);
+    request_packet = struct.pack('>BBBBI', ver_type, cmd_flag, id, length, address)
     if (command == 'WRITE'):
         request_packet += data
 
