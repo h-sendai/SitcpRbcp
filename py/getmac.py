@@ -3,7 +3,7 @@
 import sys
 
 try:
-    import sitcprbc
+    import sitcprbcp
 except ImportError, e:
     print 'Error: need sitcprbcp python module'
     sys.exit(e)
