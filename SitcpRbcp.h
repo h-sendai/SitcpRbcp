@@ -257,6 +257,7 @@ int SitcpRbcp::send_recv_command_packet(int command, std::string ip_address, int
                           "send: " << buf[i] << ", ack packet: " << recv_buf[SITCP_RBCP_HEADER_LEN + i]
                           << std::endl;
                 std::cerr << std::dec;
+                return -1;
             }
         }
     }
