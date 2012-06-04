@@ -28,7 +28,11 @@ def read_registers(ip_address, address, length, id = 1):
 
     """
 
-    rv = send_recv_command_packet('READ', ip_address, address, length, '', id)
+    try:
+        rv = send_recv_command_packet('READ', ip_address, address, length, '', id)
+    except:
+        raise
+
     return rv
 
 def write_registers(ip_address, address, length, data, id = 1):
@@ -38,7 +42,11 @@ def write_registers(ip_address, address, length, data, id = 1):
     Throw exception (string) if errors.
     """
 
-    rv = send_recv_command_packet('WRITE', ip_address, address, length, data, id)
+    try:
+        rv = send_recv_command_packet('WRITE', ip_address, address, length, data, id)
+    except:
+        raise
+
     return rv
 
 def send_recv_command_packet(command, ip_address, address, length, data, id):
@@ -48,7 +56,7 @@ def send_recv_command_packet(command, ip_address, address, length, data, id):
     elif (command == 'WRITE'):
         cmd_flag = 0x80
     else:
-        raise("Unknown command (not READ nor WRITE) in send_recv_command_packet")
+        raise ValueError, 'Unknown command (not READ nor WRITE) in send_recv_command_packet'
     request_packet = struct.pack('>BBBBI', ver_type, cmd_flag, id, length, address)
     if (command == 'WRITE'):
         request_packet += data
@@ -62,10 +70,23 @@ def send_recv_command_packet(command, ip_address, address, length, data, id):
         # [1] contains (host, port)
     except socket.error, e:
         s.close()
-        raise(e)
+        raise socket.error, e
 
     reply_header = reply_packet[0:8]
     reply_data = reply_packet[8:]
+    
+    # check reply header 
+    (reply_ver_type, reply_cmd_flag, reply_id, reply_length, reply_address) = \
+        struct.unpack('>BBBBI', reply_header)
+    if (reply_ver_type != 0xff):
+        raise ValueError, 'reply packet Ver/Type is not 0xff'
+    ackbit_mask = 0x80
+    if ((reply_cmd_flag & ackbit_mask) != ackbit_mask):
+        raise ValueError, 'reply packet does not have ackbit'
+    if (reply_length != length):
+        raise ValueError, 'reply length does not match with original length'
+    if (reply_address != address):
+        raise ValueError, 'reply address does not match with original address'
 
     # READ Command
     if (command == 'READ'):
@@ -75,15 +96,15 @@ def send_recv_command_packet(command, ip_address, address, length, data, id):
     if (command == 'WRITE'):
         for i in range(0, length):
             if data[i] != reply_data[i]:
-                raise("orignal data and reply data does not match.")
+                raise ValueError, 'orignal data and reply data does not match.'
         # Re-read and verify
         try:
             re_read_data = read_registers(ip_address, address, length)
         except:
-            raise("re-read-data fail")
+            raise
         for i in range (0, length):
             if data[i] != re_read_data[i]:
-                raise("orignal data and re-read data does not match")
+                raise ValueError, 'orignal data and re-read data does not match'
         return 0
 
 def main():
