@@ -4,7 +4,7 @@
 
 This module provides SiTCP registers read/write method via RBCP.
 Speficication of RBCP (Remote Bus Control Protocol) is
-avaiable at the SiTCP Homepage (http://e-sys.kek.jp/tech/sitcp/).
+available at the SiTCP Homepage (http://e-sys.kek.jp/tech/sitcp/).
 """
 
 __all__     = ['read_registers', 'write_registers']
@@ -23,6 +23,9 @@ def read_registers(ip_address, address, length, id = 1):
     length of the registers is length.  You may specify optional RBCP id number.
     Returns register values as string.
     Read timeout of the reply packet is 2 seconds (fixed).
+    Returns read bytes number if success.
+    Throw exception (string) if errors.
+
     """
 
     rv = send_recv_command_packet('READ', ip_address, address, length, '', id)
@@ -31,6 +34,8 @@ def read_registers(ip_address, address, length, id = 1):
 def write_registers(ip_address, address, length, data, id = 1):
     """ Send write request to ip_address.  You may specify optional RBCP id number.
     Read timeout of the reply packet is 2 seconds (fixed).
+    Returns 0 if success.
+    Throw exception (string) if errors.
     """
 
     rv = send_recv_command_packet('WRITE', ip_address, address, length, data, id)
