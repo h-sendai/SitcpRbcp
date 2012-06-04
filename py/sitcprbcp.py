@@ -68,7 +68,6 @@ def send_recv_command_packet(command, ip_address, address, length, data, id):
 
     # WRITE Command
     if (command == 'WRITE'):
-        # XXX: NotYet: re-read registers and verify
         for i in range(0, length):
             if data[i] != reply_data[i]:
                 raise("orignal data and reply data does not match.")
