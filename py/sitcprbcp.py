@@ -61,13 +61,25 @@ def send_recv_command_packet(command, ip_address, address, length, data, id):
 
     reply_header = reply_packet[0:8]
     reply_data = reply_packet[8:]
+
+    # READ Command
     if (command == 'READ'):
         return reply_data
+
+    # WRITE Command
     if (command == 'WRITE'):
         # XXX: NotYet: re-read registers and verify
         for i in range(0, length):
             if data[i] != reply_data[i]:
                 raise("orignal data and reply data does not match.")
+        # Re-read and verify
+        try:
+            re_read_data = read_registers(ip_address, address, length)
+        except:
+            raise("re-read-data fail")
+        for i in range (0, length):
+            if data[i] != re_read_data[i]:
+                raise("orignal data and re-read data does not match")
         return 0
 
 def main():
