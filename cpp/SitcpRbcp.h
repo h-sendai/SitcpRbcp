@@ -87,7 +87,8 @@ public:
         int length,
         unsigned char *buf,
         int id = 1
-    ); int write_registers(
+    );
+    int write_registers(
         std::string ip_address,
         int address,
         int length,
