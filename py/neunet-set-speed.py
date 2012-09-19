@@ -23,7 +23,7 @@ def main():
     except socket.error, e:
         sys.exit(e)
     except:
-        sis.exit('error')
+        sys.exit('error')
 
     print 'OK'
         
