@@ -21,10 +21,25 @@ import struct
 def read_registers(ip_address, address, length, id = 1):
     """ Send read request to ip_address.  Register address is address,
     length of the registers is length.  You may specify optional RBCP id number.
-    Returns register values as string.
+    Returns register values as string.  You have to write decode routine as you like.
     Read timeout of the reply packet is 2 seconds (fixed).
-    Returns read bytes number if success.
     Throw exception (string) if errors.
+
+    Sample code:
+
+    import socket # for "try read_registers()" timeout etc.
+    import sitcprbcp
+
+    try:
+        data = read_registers('192.168.0.16', 0x80, 6, 100)
+    except socket.error, e:
+        sys.exit(e)
+    except:
+        sys.exit('error')
+
+    for i in data:
+        print '%02x' % (ord(i)),
+    print
 
     """
 
@@ -35,21 +50,46 @@ def read_registers(ip_address, address, length, id = 1):
 
     return rv
 
-def write_registers(ip_address, address, length, data, id = 1):
-    """ Send write request to ip_address.  You may specify optional RBCP id number.
+def write_registers(ip_address, address, length, data, id = 1, verify = 0):
+    """ Send write request to ip_address.
+    You may specify optional RBCP id number.  If you did not specify id,
+    id = 1 will be used.
+    You may specify verify = 1 to re-read to verify the write value.
+    Default is not use verify mode.
     Read timeout of the reply packet is 2 seconds (fixed).
     Returns 0 if success.
     Throw exception (string) if errors.
-    """
+
+    Sample code:
+
+    import socket # for "try read_registers()" timeout etc.
+    import struct # to pack binary data for write data
+    import sitcprbcp
+
+    ip_address = '192.168.0.32'
+    address    = 0x1ad
+    length     = 1
+    data       = struct.pack('>B', 0x20)
+    id         = 100
 
     try:
-        rv = send_recv_command_packet('WRITE', ip_address, address, length, data, id)
+        sitcprbcp.write_registers(ip_address, address, length, data, id, verify = 0)
+    except socket.error, e:
+        sys.exit(e)
+    except:
+        sys.exit('error')
+
+    print 'OK'
+    
+    """
+    try:
+        rv = send_recv_command_packet('WRITE', ip_address, address, length, data, id, verify)
     except:
         raise
 
     return rv
 
-def send_recv_command_packet(command, ip_address, address, length, data, id):
+def send_recv_command_packet(command, ip_address, address, length, data, id, verify = 0):
     ver_type = 0xff
     if (command == 'READ'):
         cmd_flag = 0xc0 # for read
@@ -98,13 +138,15 @@ def send_recv_command_packet(command, ip_address, address, length, data, id):
             if data[i] != reply_data[i]:
                 raise ValueError, 'orignal data and reply data does not match.'
         # Re-read and verify
-        try:
-            re_read_data = read_registers(ip_address, address, length)
-        except:
-            raise
-        for i in range (0, length):
-            if data[i] != re_read_data[i]:
-                raise ValueError, 'orignal data and re-read data does not match'
+        if verify != 0:
+            sys.stderr.write("verify on")
+            try:
+                re_read_data = read_registers(ip_address, address, length)
+            except:
+                raise
+            for i in range (0, length):
+                if data[i] != re_read_data[i]:
+                    raise ValueError, 'orignal data and re-read data does not match'
         return 0
 
 def main():

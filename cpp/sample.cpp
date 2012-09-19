@@ -24,14 +24,15 @@ int main(int argc, char *argv[])
 
     buf[0] = 100;
     bcp.set_verify_mode();
-    if (bcp.write_registers("192.168.0.16", address, length, buf) < 0) {
+    std::cerr << "trying to write" << std::endl;
+    if (bcp.write_registers("192.168.0.32", address, length, buf) < 0) {
         std::cerr << "ERROR!" << std::endl;
     }
 
     address = 0x80;
     length  = 6;
     unsigned char mac[length];
-    if (bcp.read_registers("192.168.0.16", address , sizeof(mac), mac, 100) < 0) {
+    if (bcp.read_registers("192.168.0.32", address , sizeof(mac), mac, 100) < 0) {
         return 1;
     }
 
