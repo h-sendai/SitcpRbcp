@@ -14,13 +14,14 @@ def main():
     ip_address = '192.168.0.32'
     address    = 0x1ad
     length     = 1
-    #data       = '\x20'
     data       = struct.pack('>B', 0x20)
     id         = 100
 
     try:
         sitcprbcp.write_registers(ip_address, address, length, data, id, verify = 0)
     except socket.error, e:
+        sys.exit(e)
+    except ValueError, e:
         sys.exit(e)
     except:
         sys.exit('error')

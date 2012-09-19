@@ -58,7 +58,7 @@ def write_registers(ip_address, address, length, data, id = 1, verify = 0):
     Default is not use verify mode.
     Read timeout of the reply packet is 2 seconds (fixed).
     Returns 0 if success.
-    Throw exception (string) if errors.
+    Throw ValueError exception if re-read value does not match original data.
 
     Sample code:
 
@@ -73,8 +73,10 @@ def write_registers(ip_address, address, length, data, id = 1, verify = 0):
     id         = 100
 
     try:
-        sitcprbcp.write_registers(ip_address, address, length, data, id, verify = 0)
+        sitcprbcp.write_registers(ip_address, address, length, data, id, verify = 1)
     except socket.error, e:
+        sys.exit(e)
+    except ValueError, e:
         sys.exit(e)
     except:
         sys.exit('error')
