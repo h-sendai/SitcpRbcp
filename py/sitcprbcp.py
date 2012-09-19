@@ -19,15 +19,31 @@ import socket
 import struct
 
 def read_registers(ip_address, address, length, id = 1):
-    """ Send read request to ip_address.  Register address is address,
-    length of the registers is length.  You may specify optional RBCP id number.
-    Returns register values as string.  You have to write decode routine as you like.
+    """ Send read request to ip_address.
     Read timeout of the reply packet is 2 seconds (fixed).
-    Throw exception (string) if errors.
+
+    Parameters:
+        ip_address
+            IP address of the SiTCP equipment.
+        address
+            Register address.
+        length
+            Length of the registers to be read (by byte).
+        id (optional)
+            ID number of the RBCP.  If you omit this ID, 1 will be used.
+
+    Return Value:
+        Returns read data as python string.  You have to write decode
+        routine as you like.
+    
+    Exception:
+        Throw socket.error if socket error occurs.
+        Throw VaeluError if RBCP violation occurs.
 
     Sample code:
 
     import socket # for "try read_registers()" timeout etc.
+    import sys
     import sitcprbcp
 
     try:
@@ -52,18 +68,38 @@ def read_registers(ip_address, address, length, id = 1):
 
 def write_registers(ip_address, address, length, data, id = 1, verify = 0):
     """ Send write request to ip_address.
-    You may specify optional RBCP id number.  If you did not specify id,
-    id = 1 will be used.
-    You may specify verify = 1 to re-read to verify the write value.
-    Default is not use verify mode.
-    Read timeout of the reply packet is 2 seconds (fixed).
-    Returns 0 if success.
-    Throw ValueError exception if re-read value does not match original data.
+
+    Parameters:
+        ip_address
+            IP address of the SiTCP equipment.
+        address
+            Register address.
+        length
+            Length of the registers to be written (by byte).
+        data
+            Python string to be written.
+            Use struct.pack method to pack binary values (see sample code below).
+        id (optional)
+            ID number of the RBCP.  If you omit this ID, 1 will be used.
+        verify (optional)
+            You have to re-read the registers to lookup the write
+            has been done successfully or not.  To re-read the registers,
+            specify verify = 1.  Default is 0 (don't re-read).
+
+    Return Values:
+        Returns 0 if success.
+        If error occurs, exception will be thrown.
+
+    Exception:
+        Throw socket.error if socket error occurs.
+        Throw VaeluError if RBCP violation occurs.
+        Throw VaeluError if re-read data does not match the orignal data.
 
     Sample code:
 
     import socket # for "try read_registers()" timeout etc.
     import struct # to pack binary data for write data
+    import sys
     import sitcprbcp
 
     ip_address = '192.168.0.32'
