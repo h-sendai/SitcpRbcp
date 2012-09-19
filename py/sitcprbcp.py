@@ -12,9 +12,7 @@ __author__  = 'Hiroshi Sendai'
 __version__ = '0.00'
 __date__    = 'June 4, 2012'
 
-import os
 import sys
-import time # for sleep
 import socket
 import struct
 
