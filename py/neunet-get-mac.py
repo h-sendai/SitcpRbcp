@@ -9,7 +9,7 @@ except ImportError, e:
     sys.exit(e)
 
 def main():
-    ip_address = '192.168.0.16'
+    ip_address = '192.168.0.32'
     address    = 0x80
     length     = 6
     id         = 100

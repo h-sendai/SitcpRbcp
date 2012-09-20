@@ -18,7 +18,7 @@ def main():
     id         = 100
 
     try:
-        sitcprbcp.write_registers(ip_address, address, length, data, id, verify = 0)
+        sitcprbcp.write_registers(ip_address, address, length, data, id, verify = 1)
     except socket.error, e:
         sys.exit(e)
     except ValueError, e:
