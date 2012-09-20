@@ -183,7 +183,12 @@ def send_recv_command_packet(command, ip_address, address, length, data, id, ver
             for i in range (0, length):
                 if data[i] != re_read_data[i]:
                     raise ValueError, 'orignal data and re-read data does not match'
-        return 0
+    try:
+        s.close()
+    except socket.error, e:
+        raise socket.error, e
+
+    return 0
 
 def main():
     data = read_registers('192.168.0.16', 0x80, 6, 100)
