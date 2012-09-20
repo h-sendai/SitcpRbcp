@@ -6,6 +6,62 @@ This module allows you to use SiTCP RBCP (Remote Bus Control Protocol).
 The specification of the SiTCP RBCP is avaiable at
 http://http://e-sys.kek.jp/tech/sitcp/
 
+Sample code for read:
+
+#!/usr/bin/env python
+
+import sys
+import socket
+import struct
+import SitcpRbcp
+
+def main():
+    rbcp = SitcpRbcp.SitcpRbcp()
+    rbcp.set_timeout(0.5)
+    ip_address = '192.168.0.32'
+    try:
+        mac_address = rbcp.read_registers(ip_address, address = 0x80, length = 6)
+    except socket.error, e:
+        sys.exit(e)
+    except Exception, e:
+        sys.exit(e)
+    else:
+        print ip_address,
+        for i in mac_address:
+            print '%02X' % (ord(i)),
+        print
+
+if __name__ == '__main__':
+    main()
+
+Sample code for write:
+
+#!/usr/bin/env python
+
+import sys
+import socket
+import struct
+import SitcpRbcp
+
+def main():
+    rbcp = SitcpRbcp.SitcpRbcp()
+    rbcp.set_verify_mode()
+    rbcp.set_timeout(0.5)
+    ip_address = '192.168.0.32'
+    speed_data = struct.pack('>B', 0x20)
+
+    try:
+        rbcp.write_registers(ip_address, address = 0x1ad, length = 1, id = 10, data = speed_data)
+    except socket.error, e:
+        sys.exit(e)
+    except Error, e:
+        sys.exit('error')
+    else:
+        print "speed data write done"
+
+if __name__ == '__main__':
+    main()
+
 """
 
 import sys

@@ -7,7 +7,6 @@ import SitcpRbcp
 
 def main():
     rbcp = SitcpRbcp.SitcpRbcp()
-    rbcp.set_verify_mode()
     rbcp.set_timeout(0.5)
     ip_address = '192.168.0.32'
     try:
