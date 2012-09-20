@@ -12,7 +12,6 @@ Sample code for read:
 
 import sys
 import socket
-import struct
 import SitcpRbcp
 
 def main():
