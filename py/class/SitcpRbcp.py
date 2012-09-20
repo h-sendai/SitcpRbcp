@@ -77,14 +77,14 @@ This is a bug of the SitcpRbcp module (not a bug of user program)'
         (reply_ver_type, reply_cmd_flag, reply_id, reply_length, reply_address) = \
             struct.unpack('>BBBBI', reply_header)
         if reply_ver_type != 0xff:
-            raise ValueError, 'reply packet Ver/Type is not 0xff'
+            raise ValueError, 'reply packet Ver/Type is not 0xff (but %02x)' % (reply_ver_type)
         ackbit_mask = 0x80
         if (reply_cmd_flag & ackbit_mask) != ackbit_mask:
             raise ValueError, 'reply packet does not have Ack bit'
         if reply_length != length:
-            raise ValueError, 'reply length does not match with original length'
+            raise ValueError, 'reply length (%d) does not match with the request length (%d)' % (reply_length, length)
         if reply_address != address:
-            raise ValueError, 'reply address does not match with original address'
+            raise ValueError, 'reply address (%08x) does not match with the request address (%08x)' % (reply_address, address)
             
         if command == 'READ':
             return reply_data
