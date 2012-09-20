@@ -11,7 +11,7 @@ def main():
     rbcp.set_timeout(0.5)
     ip_address = '192.168.0.32'
     try:
-        mac_address = rbcp.read_registers(ip_address, address = 0x80, length = 128)
+        mac_address = rbcp.read_registers(ip_address, address = 0x80, length = 6)
     except socket.error, e:
         sys.exit(e)
     except Exception, e:
