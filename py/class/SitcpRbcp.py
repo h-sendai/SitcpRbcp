@@ -50,7 +50,7 @@ def main():
     speed_data = struct.pack('>B', 0x20)
 
     try:
-        rbcp.write_registers(ip_address, address = 0x1ad, length = 1, id = 10, data = speed_data)
+        rbcp.write_registers(ip_address, address = 0x1ad, length = len(speed_data), id = 10, data = speed_data)
     except socket.error, e:
         sys.exit(e)
     except Error, e:
