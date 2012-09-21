@@ -102,13 +102,14 @@ class SitcpRbcp:
             'Unknown command in _send_recv_command_packet.  \
 This is a bug of the SitcpRbcp module (not a bug of user program)'
         
+        request_packet = struct.pack('>BBBBI', ver_type, cmd_flag, id, length, address)
+        if command == 'WRITE':
+            request_packet += data
+
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         except socket.error, e:
             raise socket.error, e
-        request_packet = struct.pack('>BBBBI', ver_type, cmd_flag, id, length, address)
-        if command == 'WRITE':
-            request_packet += data
 
         s.settimeout(self.timeout)
         port = 4660
@@ -123,6 +124,11 @@ This is a bug of the SitcpRbcp module (not a bug of user program)'
             # [1] contains (host, port) tuple
         except socket.error, e:
             s.close()
+            raise socket.error, e
+
+        try:
+            s.close()
+        except socket.error, e:
             raise socket.error, e
 
         reply_header = reply_packet[0:8]
@@ -162,10 +168,6 @@ This is a bug of the SitcpRbcp module (not a bug of user program)'
                             raise ValueError,\
                             'original data and reply data does not match: orig: %02x, reply: %02x' \
                             % (data[i], re_read_data[i])
-        try:
-            s.close()
-        except socket.error, e:
-            raise socket.error, e
 
     def read_registers(self, ip_address, address, length, id = 1):
         #self.ip_address = ip_address
