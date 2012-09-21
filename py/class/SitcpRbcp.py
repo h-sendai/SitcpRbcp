@@ -172,6 +172,11 @@ This is a bug of the SitcpRbcp module (not a bug of user program)'
         #self.address    = address
         #self.length     = length
         #self.id         = id
+        if length > 255:
+            raise ValueError, 'Length too large: %d' % (length)
+        if length <= 0:
+            raise ValueError, 'Length too small: %d' % (length)
+
         if self.verbose:
             print 'ip_address: %s, address: %d, length: %d, timeout: %.3f ' % \
                 (ip_address, address, length, self.timeout)
@@ -185,6 +190,13 @@ This is a bug of the SitcpRbcp module (not a bug of user program)'
         #self.length     = length
         #self.id         = id
         #self.data       = data
+        if length > 255:
+            raise ValueError, 'Length too large: %d' % (length)
+        if length <= 0:
+            raise ValueError, 'Length too small: %d' % (length)
+        if len(data) != length:
+            raise ValueError, 'Data length (%d) and Length (%d) does not match.' % (len(data), length)
+
         if self.verbose:
             print 'ip_address: %s, address: %d, length: %d, timeout: %.3f ' % \
                 (ip_address, address, length, self.timeout)
