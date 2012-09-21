@@ -14,10 +14,14 @@ def main():
     length     = 6
     id         = 100
 
-    data = sitcprbcp.read_registers(ip_address, address, length, id)
-    for i in data:
-        print '%02x' % (ord(i)),
-    print
+    try:
+        data = sitcprbcp.read_registers(ip_address, address, length, id)
+    except Exception, e:
+        sys.exit(e)
+    else:
+        for i in data:
+            print '%02x' % (ord(i)),
+        print
     
 if __name__ == '__main__':
     main()

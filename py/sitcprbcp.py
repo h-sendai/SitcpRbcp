@@ -57,6 +57,11 @@ def read_registers(ip_address, address, length, id = 1):
 
     """
 
+    if length > 255:
+        raise ValueError, 'Length too large: %d' % (length)
+    if length <= 0:
+        raise ValueError, 'Length too small: %d' % (length)
+
     try:
         rv = send_recv_command_packet('READ', ip_address, address, length, '', id)
     except:
@@ -118,6 +123,14 @@ def write_registers(ip_address, address, length, data, id = 1, verify = 0):
     print 'OK'
     
     """
+    if length > 255:
+        raise ValueError, 'Length too large: %d' % (length)
+    if length <= 0:
+        raise ValueError, 'Length too small: %d' % (length)
+
+    if len(data) != length:
+        raise ValueError, 'Data length (%d) and Length (%d) does not match.' % (len(data), length)
+
     try:
         rv = send_recv_command_packet('WRITE', ip_address, address, length, data, id, verify)
     except:
