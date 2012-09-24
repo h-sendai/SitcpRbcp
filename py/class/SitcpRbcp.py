@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+__author__  = 'Hiroshi Sendai'
+__data__    = 'Sept. 24, 2012'
+__version__ = '0.01'
+__license__ = 'BSD'
+
 r"""Slow control module for SiTCP
 
 This module allows you to use SiTCP RBCP (Remote Bus Control Protocol).
@@ -76,22 +81,28 @@ class SitcpRbcp:
         self.timeout         = 2.0
 
     def set_timeout(self, timeout):
+        """Set socket timeout to read/write.  Default is 2.0 seconds."""
         self.timeout = timeout
 
     def get_timeout(self):
+        """Returns socket timeout to read/write.  Default is 2.0 seconds."""
         return self.timeout
 
     def set_verbose(self):
-        """Set verbose mode"""
+        """Print some debug messages.  Default is don't print debug messages."""
         self.verbose = True
 
     def unset_verbose(self):
+        """Unset debug messages."""
         self.verbose = False
 
     def set_verify_mode(self):
+        """Re-read the registers on write_registers().  Default is
+        don't re-read."""
         self.verify_on_write = True
 
     def unset_verify_mode(self):
+        """Do not re-read the registers on write_registers()."""
         self.verify_on_write = False
 
     def _send_recv_command_packet(self, command, ip_address, address, length, id, data = ''):
@@ -173,6 +184,8 @@ This is a bug of the SitcpRbcp module (not a bug of user program)'
                             % (data[i], re_read_data[i])
 
     def read_registers(self, ip_address, address, length, id = 1):
+        """try to read registers.  Returns read data as string.
+        Use struct module to decode the return string."""
         #self.ip_address = ip_address
         #self.address    = address
         #self.length     = length
@@ -190,6 +203,9 @@ This is a bug of the SitcpRbcp module (not a bug of user program)'
         return data
 
     def write_registers(self, ip_address, address, length, id = 1, data = ''):
+        """Try to write registers at address and length.  Data is a python string.
+        Use struct module to create data.  If verify mode is on, try to read
+        the registers after write.  Default is don't verify."""
         #self.ip_address = ip_address
         #self.address    = address
         #self.length     = length
