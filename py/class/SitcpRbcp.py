@@ -78,6 +78,9 @@ class SitcpRbcp:
     def set_timeout(self, timeout):
         self.timeout = timeout
 
+    def get_timeout(self):
+        return self.timeout
+
     def set_verbose(self):
         """Set verbose mode"""
         self.verbose = True

@@ -7,6 +7,8 @@ import SitcpRbcp
 def main():
     rbcp = SitcpRbcp.SitcpRbcp()
     rbcp.set_timeout(0.5)
+    print 'timeout:', rbcp.get_timeout()
+
     ip_address = '192.168.0.32'
     try:
         mac_address = rbcp.read_registers(ip_address, address = 0x80, length = 6)
