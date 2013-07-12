@@ -1,7 +1,8 @@
 CC = g++
 PROG = sample
 CXXFLAGS = -g -O2 -Wall
-LDLIBS += -L/usr/lib/daqmw -lSock
+#LDLIBS += -L/usr/lib/daqmw -lSock
+LDLIBS += -L/usr/lib64/daqmw -lSock
 
 OBJS += sample.o
 
