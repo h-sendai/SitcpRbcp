@@ -11,7 +11,7 @@ except ImportError, e:
     sys.exit(e)
 
 def main():
-    ip_address = '192.168.0.32'
+    ip_address = '192.168.0.16'
     address    = 0x1ad
     length     = 1
     data       = struct.pack('>B', 0x20)

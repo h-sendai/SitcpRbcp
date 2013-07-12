@@ -38,7 +38,22 @@ def read_registers(ip_address, address, length, id = 1):
         Throw socket.error if socket error occurs.
         Throw VaeluError if RBCP violation occurs.
 
-    Sample code:
+    Sample code 1:
+
+    import socket # for "try read_registers()" timeout etc.
+    import sitcprbcp
+
+    try:
+        data = read_registers('192.168.0.16', 0x80, 1)
+    except socket.error, e:
+        sys.exit(e)
+    except:
+        sys.exit('error')
+
+    # struct.unpack() returns tuple (to get the first value, add [0]).
+    register_value = struct.unpack('>B', data)[0]
+
+    Sample code 2:
 
     import socket # for "try read_registers()" timeout etc.
     import sys
@@ -188,7 +203,6 @@ def send_recv_command_packet(command, ip_address, address, length, data, id, ver
                 raise ValueError, 'orignal data and reply data does not match.'
         # Re-read and verify
         if verify != 0:
-            sys.stderr.write("verify on")
             try:
                 re_read_data = read_registers(ip_address, address, length)
             except:
