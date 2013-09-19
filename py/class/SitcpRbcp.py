@@ -1,10 +1,5 @@
 #!/usr/bin/env python
 
-__author__  = 'Hiroshi Sendai'
-__data__    = 'Sept. 24, 2012'
-__version__ = '0.01'
-__license__ = 'BSD'
-
 r"""Slow control module for SiTCP
 
 This module allows you to use SiTCP RBCP (Remote Bus Control Protocol).
@@ -67,6 +62,11 @@ if __name__ == '__main__':
     main()
 
 """
+
+__author__  = 'Hiroshi Sendai'
+__data__    = 'Sept. 20, 2013'
+__version__ = '1.0'
+__license__ = 'MIT/X'
 
 import sys
 import socket
