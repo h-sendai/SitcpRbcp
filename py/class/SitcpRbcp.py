@@ -61,11 +61,24 @@ def main():
 if __name__ == '__main__':
     main()
 
+Sample code for write (one register)
+
+#!/usr/bin/env python
+import SitcpRbcp
+
+def main():
+    rbcp = SitcpRbcp.SitcpRbcp()
+    rbcp.set_veriy_mode()
+    rbcp.set_timeout(1.0)
+    write_register_f('192.168.0.16', 0x10, '>B', 10)
+
+if __name__ == '__main__':
+    main()
 """
 
 __author__  = 'Hiroshi Sendai'
-__data__    = 'Sept. 20, 2013'
-__version__ = '1.0'
+__data__    = 'Nov. 16, 2013'
+__version__ = '1.1'
 __license__ = 'MIT/X'
 
 import sys
@@ -225,6 +238,15 @@ This is a bug of the SitcpRbcp module (not a bug of user program)'
         self._send_recv_command_packet('WRITE', ip_address, address, length, id, data)
         return 0
         
+    def write_register_f(self, ip_address, address, format, data, id = 1):
+        """write registers with format.  format is a format string of the struct package.
+           Example: write_register_f('192.168.0.16', 0x01, '>B', 0x10)
+        """
+
+        write_data = struct.pack(format, data)
+        length = len(write_data)
+        self.write_registers(ip_address, address, length, id, write_data)
+
 def main():
     rbcp = SitcpRbcp()
     rbcp.set_verify_mode()
