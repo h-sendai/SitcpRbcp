@@ -180,8 +180,8 @@ This is a bug of the SitcpRbcp module (not a bug of user program)'
                     for i in range (0, length):
                         if data[i] != re_read_data[i]:
                             raise ValueError,\
-                            'original data and reply data does not match: orig: %02x, reply: %02x' \
-                            % (data[i], re_read_data[i])
+                            'original data and reply data does not match: orig: 0x%02x, reply: 0x%02x' \
+                            % (ord(data[i]), ord(re_read_data[i]))
 
     def read_registers(self, ip_address, address, length, id = 1):
         """try to read registers.  Returns read data as string.
