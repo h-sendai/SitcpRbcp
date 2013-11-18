@@ -239,7 +239,7 @@ This is a bug of the SitcpRbcp module (not a bug of user program)'
         return 0
         
     def write_register_f(self, ip_address, address, format, data, id = 1):
-        """write registers with format.  format is a format string of the struct package.
+        """write one register with format.  format is a format string of the struct package.
            Example: write_register_f('192.168.0.16', 0x01, '>B', 0x10)
         """
 
