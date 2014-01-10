@@ -53,8 +53,8 @@ def main():
         rbcp.write_registers(ip_address, address = 0x1ad, length = len(speed_data), id = 10, data = speed_data)
     except socket.error, e:
         sys.exit(e)
-    except Error, e:
-        sys.exit('error')
+    except Exeption, e:
+        sys.exit(e)
     else:
         print "speed data write done"
 
@@ -294,8 +294,8 @@ def main():
         rbcp.write_registers(ip_address, address = 0x1ad, length = 1, id = 10, data = speed_data)
     except socket.error, e:
         sys.exit(e)
-    except Error, e:
-        sys.exit('error')
+    except Exception, e:
+        sys.exit(e)
     else:
         print "speed data write done"
 
