@@ -70,7 +70,7 @@ def main():
     rbcp = SitcpRbcp.SitcpRbcp()
     rbcp.set_veriy_mode()
     rbcp.set_timeout(1.0)
-    data = read_register_f('192.168.0.16', 0x10, '>B')
+    data = rbcp.read_register_f('192.168.0.16', 0x10, '>B')
     print '0x%02x' % (data)
 
 if __name__ == '__main__':
@@ -85,7 +85,7 @@ def main():
     rbcp = SitcpRbcp.SitcpRbcp()
     rbcp.set_veriy_mode()
     rbcp.set_timeout(1.0)
-    write_register_f('192.168.0.16', 0x10, '>B', 10)
+    rbcp.write_register_f('192.168.0.16', 0x10, '>B', 10)
 
 if __name__ == '__main__':
     main()
