@@ -3,8 +3,8 @@
 r"""Slow control module for SiTCP
 
 This module allows you to use SiTCP RBCP (Remote Bus Control Protocol).
-The specification of the SiTCP RBCP is avaiable at
-http://http://e-sys.kek.jp/tech/sitcp/
+The specification of the SiTCP RBCP is available at
+http://research.kek.jp/people/uchida/technologies/SiTCP/
 
 Sample code for read:
 
