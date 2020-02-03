@@ -1,0 +1,9 @@
+syntax: glob
+.depend
+*.o
+*.d
+*.pyc
+*.pyo
+*~
+sample
+__pycache__
