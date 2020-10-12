@@ -6,7 +6,7 @@ import os
 import struct
 import sitcprbcp
 
-DEFAULT_IP = '192.168.10.16'
+DEFAULT_IP = '192.168.10.10'
 DEFAULT_PORT = '4660'
 
 def rbcp_help():
