@@ -32,11 +32,11 @@ class MyCmd(cmd.Cmd):
         sys.exit()
 
     ###### q command ######
-#    def help_q(self):
-#        print 'Quit this command'
-#    def do_q(self, line):
-#        sys.exit()
-    do_q = do_quit
+    def help_q(self):
+        print('Quit this command')
+    def do_q(self, line):
+        sys.exit()
+    #do_q = do_quit
         
     ###### setip command ######
     def help_setip(self):
@@ -73,7 +73,7 @@ class MyCmd(cmd.Cmd):
 
     ###### rd command ######
     def help_rd(self):
-        print('Read register(s)')
+        print('Read a register')
         print('Usage: rd address [length]')
     def do_rd(self, args):
         n_args = len(args.split())
@@ -107,9 +107,11 @@ class MyCmd(cmd.Cmd):
 
     ###### wr command ######
     def help_wr(self):
-        print('Write register(s)')
+        print('Write to a register')
         print('Usage: wr address value [format] (length will be calculate automatically)')
         print('       You may prefix 0x (hex), 0b (bin)')
+        print('       format is a python struct package format chars')
+        print('Example: wr 0x0 0x10 >I will try to write address 0x0, 0x00000001')
     def do_wr(self, args):
         n_args = len(args.split())
         if n_args == 2:
@@ -126,6 +128,15 @@ class MyCmd(cmd.Cmd):
         address = int(address_string, 0)
         value   = int(value_string, 0)
         print('wr address 0x%0x (dec %d), data 0x%0x, format %s' % (address, address, value, format))
+        rbcp = SitcpRbcp.SitcpRbcp()
+        #rbcp.set_verify_mode()
+        rbcp.set_timeout(0.5)
+        try:
+            rbcp.write_register_f(target_ip_address, address, format, value)
+        except socket.error as e:
+            print(e)
+        except Exception as e:
+            print(e)
 
 def main():
     global target_ip_address
