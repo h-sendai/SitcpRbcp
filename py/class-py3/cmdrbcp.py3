@@ -73,7 +73,7 @@ class MyCmd(cmd.Cmd):
 
     ###### rd command ######
     def help_rd(self):
-        print('Read a register')
+        print('Read a register and print its value in HEX.')
         print('Usage: rd address [length]')
     def do_rd(self, args):
         n_args = len(args.split())
@@ -101,6 +101,7 @@ class MyCmd(cmd.Cmd):
             #sys.exit(e)
             print(e)
         else:
+            print('0x ', end = '')
             for i in data:
                 print('%02X' % i, end=' ')
             print()
