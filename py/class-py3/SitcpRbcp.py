@@ -69,7 +69,7 @@ import SitcpRbcp
 def main():
     rbcp = SitcpRbcp.SitcpRbcp()
     rbcp.set_timeout(1.0)
-    data = rbcp.read_register_f('192.168.0.16', 0x10, '>B')
+    data = rbcp.read_register_f('192.168.0.16', 0x10, '>B')[0] # [0]: read_rester_f returns struct.unpack tuple
     print '0x%02x' % (data)
 
 if __name__ == '__main__':
@@ -259,9 +259,10 @@ This is a bug of the SitcpRbcp module (not a bug of user program)')
         self.write_registers(ip_address, address, length, id, write_data)
 
     def read_register_f(self, ip_address, address, format, id = 1):
-        """read one register with format.  Return read value.
+        """read one register with format. 
            format is a format string of the struct package.
-           Example: read_register_f('192.168.0.16', 0x01, '>B')
+           Return read value as struct.unpack tuple.  If single value, use [0] as follows:
+           Example: read_register_f('192.168.0.16', 0x01, '>B')[0]
         """
 
         length = struct.calcsize(format)
