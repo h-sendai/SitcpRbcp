@@ -1,0 +1,3 @@
+# comment line starts with '#'
+showipport
+setip 192.168.10.10

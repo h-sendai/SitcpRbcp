@@ -66,7 +66,7 @@ class MyCmd(cmd.Cmd):
     def help_showipport(self):
         print('Print current readout module IP address and Port for RBCP')
     def do_showipport(self, args):
-        self.print_hex('abcd')
+        # self.print_hex('abcd')
         global target_ip_address
         global target_port
         print('Current IP address and port for RBCP: %s port %d' % (target_ip_address, target_port))
@@ -137,6 +137,19 @@ class MyCmd(cmd.Cmd):
             print(e)
         except Exception as e:
             print(e)
+
+    ##### load command #####
+    def do_load(self, args):
+        '''load filename
+        read filename and excute it as if typed on the prompt line.
+        Lines start with '#' will be ignored (comment).
+        filename completion by TAB is not implemented.'''
+
+        with open(args, 'r') as f:
+            for line in f:
+                if line[0] == '#': # comment
+                    continue
+                cmd.Cmd.onecmd(self, line)
 
 def main():
     global target_ip_address
