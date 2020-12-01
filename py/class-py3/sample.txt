@@ -1,3 +1,4 @@
+# cmdrbcp.py3 load command sample text
 # comment line starts with '#'
 showipport
 setip 192.168.10.10
