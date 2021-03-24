@@ -12,7 +12,7 @@ target_ip_address = '192.168.10.16'
 target_port       = 4660
 
 # _append_slash_if_dir():
-# use load command filename completion
+# use in complete_load() (load command filename completion)
 # https://stackoverflow.com/a/27256663
 # by https://stackoverflow.com/users/1070181/meffie
 # CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
