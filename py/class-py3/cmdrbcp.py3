@@ -123,10 +123,12 @@ class MyCmd(cmd.Cmd):
     ###### wr command ######
     def help_wr(self):
         print('Write to a register')
-        print('Usage: wr address value [format] (length will be calculate automatically)')
+        print('Usage: wr address value [format] (length will be calculate according to format automatically)')
         print('       You may prefix 0x (hex), 0b (bin)')
         print('       format is a python struct package format chars')
-        print('Example: wr 0x0 0x10 >I will try to write address 0x0, 0x00000001')
+        print('Example: wr 0x0 0x01    will try to write address 0x0, value 0x01')
+        print('         wr 0x0 0x01 >B will try to write address 0x0, value 0x01')
+        print('         wr 0x0 0x01 >I will try to write address 0x0, value 0x00000001 (>I: as int. 4 bytes)')
     def do_wr(self, args):
         n_args = len(args.split())
         if n_args == 2:
