@@ -89,6 +89,7 @@ class MyCmd(cmd.Cmd):
     def help_rd(self):
         print('Read a register and print its value in HEX.')
         print('Usage: rd address [length]')
+        print('       default length is 1 bytes')
     def do_rd(self, args):
         n_args = len(args.split())
         if n_args == 1:
@@ -157,7 +158,7 @@ class MyCmd(cmd.Cmd):
 
     ##### load command #####
     def do_load(self, args):
-        '''load filename
+        '''Usage: load filename
         read filename and excute it as if typed on the prompt line.
         Lines start with '#' will be ignored (comment).
         You can complete the filename by hitting TAB.'''
@@ -202,6 +203,7 @@ def main():
     p = MyCmd()
     p.intro  = 'Trying IP address: %s, Port: %d\n' % (target_ip_address, target_port)
     p.intro += 'Type help to get available commands.  Type q to quit\n'
+    p.intro += 'help <command> displays each <command> help.  Example: help rd\n'
     p.intro += 'command/filename completion by TAB key, history and command line editing available\n'
     p.intro += 'Good luck!'
     p.cmdloop()
