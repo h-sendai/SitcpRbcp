@@ -6,9 +6,21 @@ import time # for sleep
 import cmd
 import SitcpRbcp
 import socket
+import glob
 
 target_ip_address = '192.168.10.16'
 target_port       = 4660
+
+# _append_slash_if_dir():
+# use load command filename completion
+# https://stackoverflow.com/a/27256663
+# by https://stackoverflow.com/users/1070181/meffie
+# CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
+def _append_slash_if_dir(p):
+    if p and os.path.isdir(p) and p[-1] != os.sep:
+        return p + os.sep
+    else:
+        return p
 
 class MyCmd(cmd.Cmd):
     def __init__(self):
@@ -144,13 +156,33 @@ class MyCmd(cmd.Cmd):
         '''load filename
         read filename and excute it as if typed on the prompt line.
         Lines start with '#' will be ignored (comment).
-        filename completion by TAB is not implemented.'''
+        You can complete the filename by hitting TAB.'''
 
         with open(args, 'r') as f:
             for line in f:
                 if line[0] == '#': # comment
                     continue
                 cmd.Cmd.onecmd(self, line)
+
+    ##### load filename completion #####
+    # complete_load():
+    # https://stackoverflow.com/a/27256663
+    # by https://stackoverflow.com/users/1070181/meffie
+    # CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
+    def complete_load(self, text, line, begidx, endidx):
+        before_arg = line.rfind(" ", 0, begidx)
+        if before_arg == -1:
+            return # arg not found
+
+        fixed = line[before_arg+1:begidx]  # fixed portion of the arg
+        arg = line[before_arg+1:endidx]
+        pattern = arg + '*'
+
+        completions = []
+        for path in glob.glob(pattern):
+            path = _append_slash_if_dir(path)
+            completions.append(path.replace(fixed, "", 1))
+        return completions
 
 def main():
     global target_ip_address
@@ -164,7 +196,7 @@ def main():
     p = MyCmd()
     p.intro  = 'Trying IP address: %s, Port: %d\n' % (target_ip_address, target_port)
     p.intro += 'Type help to get available commands.  Type q to quit\n'
-    p.intro += 'command completion by TAB key, history and command line editing available\n'
+    p.intro += 'command/filename completion by TAB key, history and command line editing available\n'
     p.intro += 'Good luck!'
     p.cmdloop()
 
