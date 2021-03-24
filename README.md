@@ -8,5 +8,5 @@ Yet another Sitcp RBCP program.
 - py/class-2: python2 library (class) (not maintained)
 - py/class-3: python3 library (class) and cmd (cmdrbcp.py3)
 
-[cmdrbcp.py3](py/class-3/cmdrbcp.py3) requires
-[SitcpRbcp.py](py/class-3/SitcpRbcp.py).
+py/class-py3/cmdrbcp.py3: interactive rbcp shell.  command and filename
+completion enabled.
