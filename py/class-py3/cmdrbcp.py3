@@ -13,8 +13,10 @@ target_port       = 4660
 
 # _append_slash_if_dir():
 # use in complete_load() (load command filename completion)
-# https://stackoverflow.com/a/27256663
-# by https://stackoverflow.com/users/1070181/meffie
+# From stackovewflow: https://stackoverflow.com/questions/16826172/
+#                     https://stackoverflow.com/a/27256663
+# Question by jinserk: https://stackoverflow.com/users/2392124/jinserk
+# Answer by meffie: https://stackoverflow.com/users/1070181/meffie
 # CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
 def _append_slash_if_dir(p):
     if p and os.path.isdir(p) and p[-1] != os.sep:
@@ -166,8 +168,10 @@ class MyCmd(cmd.Cmd):
 
     ##### load filename completion #####
     # complete_load():
-    # https://stackoverflow.com/a/27256663
-    # by https://stackoverflow.com/users/1070181/meffie
+    # From stackovewflow: https://stackoverflow.com/questions/16826172/
+    #                     https://stackoverflow.com/a/27256663
+    # Question by jinserk: https://stackoverflow.com/users/2392124/jinserk
+    # Answer by meffie: https://stackoverflow.com/users/1070181/meffie
     # CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
     def complete_load(self, text, line, begidx, endidx):
         before_arg = line.rfind(" ", 0, begidx)
