@@ -9,9 +9,20 @@ import socket
 import glob
 import argparse
 import signal
+import readline
 
 target_ip_address = '192.168.10.16'
 target_port       = 4660
+
+# history save support
+# histfile, histfile_size, preloop() and postloop()
+# From stackovewflow: https://stackoverflow.com/questions/39495024/
+#                     https://stackoverflow.com/a/39495060
+# Question by Martijn Pieters: https://stackoverflow.com/users/100297/martijn-pieters
+# Answer by Martijn Pieters: https://stackoverflow.com/users/100297/martijn-pieters
+# CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
+histfile          = os.path.expanduser('~/.cmdrbcp_history')
+histfile_size     = 1000
 
 # _append_slash_if_dir():
 # use in complete_load() (load command filename completion)
@@ -39,19 +50,19 @@ class MyCmd(cmd.Cmd):
     def help_EOF(self):
         print('Quit this command (also C-d)')
     def do_EOF(self, line):
-        sys.exit()
+        return True
 
     ###### quit command ######
     def help_quit(self):
         print('Quit this command')
     def do_quit(self, line):
-        sys.exit()
+        return True
 
     ###### q command ######
     def help_q(self):
         print('Quit this command')
     def do_q(self, line):
-        sys.exit()
+        return True
     #do_q = do_quit
         
     ###### setip command ######
@@ -240,6 +251,15 @@ class MyCmd(cmd.Cmd):
     # CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
     def emptyline(self):
         pass
+    
+    def preloop(self):
+        if readline and os.path.exists(histfile):
+            readline.read_history_file(histfile)
+
+    def postloop(self):
+        if readline:
+            readline.set_history_length(histfile_size)
+            readline.write_history_file(histfile)
 
 def sig_int(signo, frame):
     sys.exit(0)
