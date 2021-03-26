@@ -158,6 +158,42 @@ class MyCmd(cmd.Cmd):
         except Exception as e:
             print(e)
 
+    ##### wrb command #####
+    def help_wrb(self):
+        print('Usage: wrb address data')
+        print('       write one byte data to address')
+    def do_wrb(self, args):
+        n_args = len(args.split())
+        if n_args != 2:
+            print('usage: wrb address byte_data')
+            return 0
+        address, value_string = args.split()
+        self.do_wr(args + ' >B')
+
+    ##### wrs command #####
+    def help_wrs(self):
+        print('Usage: wrs address data')
+        print('       write one short bytes (2 bytes) to address')
+    def do_wrs(self, args):
+        n_args = len(args.split())
+        if n_args != 2:
+            print('usage: wrs address byte_data')
+            return 0
+        address, value_string = args.split()
+        self.do_wr(args + ' >H')
+
+    ##### wrw command #####
+    def help_wrw(self):
+        print('Usage: wrw address data')
+        print('       write one word bytes (4 bytes) to address')
+    def do_wrw(self, args):
+        n_args = len(args.split())
+        if n_args != 2:
+            print('usage: wrw address byte_data')
+            return 0
+        address, value_string = args.split()
+        self.do_wr(args + ' >I')
+
     ##### load command #####
     def help_load(self):
         print('load file and execute the lines')
