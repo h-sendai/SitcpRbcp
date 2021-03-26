@@ -8,6 +8,7 @@ import SitcpRbcp
 import socket
 import glob
 import argparse
+import signal
 
 target_ip_address = '192.168.10.16'
 target_port       = 4660
@@ -192,10 +193,15 @@ class MyCmd(cmd.Cmd):
             completions.append(path.replace(fixed, "", 1))
         return completions
 
+def sig_int(signo, frame):
+    sys.exit(0)
+
 def main():
     global target_ip_address
     global target_port
     global cmdline_options
+
+    signal.signal(signal.SIGINT, sig_int)
 
     cmd_example = '''
 Example:
