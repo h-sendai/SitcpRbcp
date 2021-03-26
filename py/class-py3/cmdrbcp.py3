@@ -219,7 +219,7 @@ Example:
 % cmdrbcp.py3 192.168.10.10
     interactive command.  Use 192.168.10.10 and port 4660.
 % cmdrbcp.py3 192.168.10.10 4559
-    interactive command.  Use 192.168.10.10 and port 4660.
+    interactive command.  Use 192.168.10.10 and port 4559.
 % cmdrbcp.py3 -l cmd.txt
     non-interactive command.  Read cmd.txt and execute it,
     then exit.
