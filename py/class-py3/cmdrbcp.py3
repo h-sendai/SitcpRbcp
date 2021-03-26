@@ -106,7 +106,8 @@ class MyCmd(cmd.Cmd):
 
         address = int(address_string, 0)
         length  = int(length_string, 0)
-        print('rd address 0x%0x (dec %d), length %d' % (address, address, length))
+        if command_options.debug:
+            print('debug: rd address 0x%0x (dec %d), length %d' % (address, address, length))
         rbcp = SitcpRbcp.SitcpRbcp()
         rbcp.set_timeout(0.5)
         try:
@@ -147,7 +148,8 @@ class MyCmd(cmd.Cmd):
 
         address = int(address_string, 0)
         value   = int(value_string, 0)
-        print('wr address 0x%0x (dec %d), data 0x%0x, format %s' % (address, address, value, format))
+        if command_options.debug:
+            print('debug: wr address 0x%0x (dec %d), data 0x%0x, format %s' % (address, address, value, format))
         rbcp = SitcpRbcp.SitcpRbcp()
         #rbcp.set_verify_mode()
         rbcp.set_timeout(0.5)
@@ -245,7 +247,7 @@ def sig_int(signo, frame):
 def main():
     global target_ip_address
     global target_port
-    global cmdline_options
+    global command_options
 
     signal.signal(signal.SIGINT, sig_int)
 
@@ -273,7 +275,7 @@ Use help or help <topic> command to get commands under interactive shell.
                         '--debug',
                         dest = 'debug',
                         action = 'store_true',
-                        help = 'debug (not used)')
+                        help = 'some debug printing')
     parser.add_argument('-l',
                         '--load',
                         dest = 'filename',
