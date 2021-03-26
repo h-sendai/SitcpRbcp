@@ -193,6 +193,15 @@ class MyCmd(cmd.Cmd):
             completions.append(path.replace(fixed, "", 1))
         return completions
 
+    # Don't re-execute previous command if enter empty lines
+    # From stackovewflow: https://stackoverflow.com/questions/16479029/
+    #                     https://stackoverflow.com/a/21066546
+    # Question by Fatih Karatana: https://stackoverflow.com/users/209623/fatih-karatana
+    # Answer by John Doe: https://stackoverflow.com/users/1987886/john-doe
+    # CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
+    def emptyline(self):
+        pass
+
 def sig_int(signo, frame):
     sys.exit(0)
 
