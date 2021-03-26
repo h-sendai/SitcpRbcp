@@ -66,12 +66,9 @@ Read a register and print its value in HEX.
 Usage: rd address [length]
        default length is 1 bytes
 RBCP> rd 0xffffff10 1
-rd address 0xffffff10 (dec 4294967056), length 1
 0x 01
 RBCP> wrb 0xffffff10 0
-wr address 0xffffff10 (dec 4294967056), data 0x0, format >B
 RBCP> rd 0xffffff10 1
-rd address 0xffffff10 (dec 4294967056), length 1
 0x 00
 RBCP> q
 %
