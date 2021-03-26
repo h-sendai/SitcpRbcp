@@ -73,3 +73,10 @@ RBCP> rd 0xffffff10 1
 RBCP> q
 %
 ```
+
+### history
+
+In interactive mode, like bash, you can edit the command line,
+recall previous command by ctrl-p, incremental search by ctrl-s.
+Also command input in interactive mode will be saved in
+~/.cmdrbcp_history.  This file will be read in the next invocation.
