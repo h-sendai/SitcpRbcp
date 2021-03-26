@@ -214,16 +214,16 @@ def main():
 
     cmd_example = '''
 Example:
-% rbpcmd
+% cmdrbcp.py3
     interactive command.  Use 192.168.10.16 and port 4660.
-% rbpcmd 192.168.10.10
+% cmdrbcp.py3 192.168.10.10
     interactive command.  Use 192.168.10.10 and port 4660.
-% rbpcmd 192.168.10.10 4559
+% cmdrbcp.py3 192.168.10.10 4559
     interactive command.  Use 192.168.10.10 and port 4660.
-% rbcpcmd -l cmd.txt
+% cmdrbcp.py3 -l cmd.txt
     non-interactive command.  Read cmd.txt and execute it,
     then exit.
-% rbcpcmd -l cmd.txt -i
+% cmdrbcp.py3 -l cmd.txt -i
     Read cmd.txt and execute it, then switch to interactive mode.
 
 Use help or help <topic> command to get commands under interactive shell.
