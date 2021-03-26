@@ -40,10 +40,10 @@ Example:
 % cmdrbcp.py3 -l cmd.txt -i
     Read cmd.txt and execute it, then switch to interactive mode.
 
-Use help or help <topic> command to get commands under interactive shell.
+Use help or help <topic> command to get commands under interactive mode.
 ```
 
-### interactive shell mode command
+### interactive mode command
 
 ```
 % ./cmdrbcp.py3

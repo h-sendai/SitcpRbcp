@@ -285,7 +285,7 @@ Example:
 % cmdrbcp.py3 -l cmd.txt -i
     Read cmd.txt and execute it, then switch to interactive mode.
 
-Use help or help <topic> command to get commands under interactive shell.
+Use help or help <topic> command to get commands under interactive mode.
 '''
 
     parser = argparse.ArgumentParser(description = 'Yet another RBCP program using python3',
