@@ -159,12 +159,13 @@ class MyCmd(cmd.Cmd):
             print(e)
 
     ##### load command #####
+    def help_load(self):
+        print('load file and execute the lines')
+        print('Usage: load filename')
+        print('       read filename and excute it as if typed on the prompt line.')
+        print('       Lines start with "#" in the file will be ignored (comment).')
+        print('       You can complete the filename by hitting TAB.')
     def do_load(self, args):
-        '''Usage: load filename
-        read filename and excute it as if typed on the prompt line.
-        Lines start with '#' will be ignored (comment).
-        You can complete the filename by hitting TAB.'''
-
         with open(args, 'r') as f:
             for line in f:
                 if line[0] == '#': # comment
