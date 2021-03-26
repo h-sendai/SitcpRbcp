@@ -11,7 +11,8 @@ command line tool: cmdrbcp.py3
 ### command line options
 
 ```
-cmdrbcp.py3 [-h] [-d] [-l FILENAME] [-i] [ip_address] [port]
+% cmdrbcp.py3 -h
+usage: cmdrbcp.py3 [-h] [-d] [-l FILENAME] [-i] [ip_address] [port]
 
 positional arguments:
   ip_address            IP Address
