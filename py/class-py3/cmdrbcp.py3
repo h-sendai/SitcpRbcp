@@ -7,6 +7,7 @@ import cmd
 import SitcpRbcp
 import socket
 import glob
+import argparse
 
 target_ip_address = '192.168.10.16'
 target_port       = 4660
@@ -194,13 +195,68 @@ class MyCmd(cmd.Cmd):
 def main():
     global target_ip_address
     global target_port
-    if len(sys.argv) == 2:
-        target_ip_address = sys.argv[1]
-    if len(sys.argv) == 3:
-        target_ip_address = sys.argv[1]
-        target_port = int(sys.argv[2], 0)
+    global cmdline_options
+
+    cmd_example = '''
+Example:
+% rbpcmd
+    interactive command.  Use 192.168.10.16 and port 4660.
+% rbpcmd 192.168.10.10
+    interactive command.  Use 192.168.10.10 and port 4660.
+% rbpcmd 192.168.10.10 4559
+    interactive command.  Use 192.168.10.10 and port 4660.
+% rbcpcmd -l cmd.txt
+    non-interactive command.  Read cmd.txt and execute it,
+    then exit.
+% rbcpcmd -l cmd.txt -i
+    Read cmd.txt and execute it, then switch to interactive mode.
+
+Use help or help <topic> command to get commands under interactive shell.
+'''
+
+    parser = argparse.ArgumentParser(description = 'Yet another RBCP program using python3',
+                                     formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     epilog = cmd_example)
+    parser.add_argument('-d',
+                        '--debug',
+                        dest = 'debug',
+                        action = 'store_true',
+                        help = 'debug (not used)')
+    parser.add_argument('-l',
+                        '--string',
+                        dest = 'filename',
+                        type = str,
+                        help = 'non-interactive.  Load this file and excute the commands in that file')
+    parser.add_argument('-i',
+                        '--interactive',
+                        dest = 'interactive',
+                        action = 'store_true',
+                        help = 'After load and execute via -l option, switch to interactive mode')
+    parser.add_argument(dest = 'ip_address',
+                        type = str,
+                        nargs = '?',
+                        default = '192.168.10.16',
+                        help = 'IP Address')
+    parser.add_argument(dest = 'port',
+                        type = int,
+                        nargs = '?',
+                        default = 4660,
+                        help = 'Port Number')
+
+    command_options = parser.parse_args()
+    
+    target_ip_address = command_options.ip_address
+    target_port       = command_options.port
 
     p = MyCmd()
+    if command_options.filename:
+        p.do_load(command_options.filename)
+        if command_options.interactive:
+            pass
+        else:
+            sys.exit(0)
+
+    # then enter/switch to interactive mode
     p.intro  = 'Trying IP address: %s, Port: %d\n' % (target_ip_address, target_port)
     p.intro += 'Type help to get available commands.  Type q to quit\n'
     p.intro += 'help <command> displays each <command> help.  Example: help rd\n'
