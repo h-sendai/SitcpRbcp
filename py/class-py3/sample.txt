@@ -1,4 +1,36 @@
 # cmdrbcp.py3 load command sample text
+# Usage: cmdrbcp.py3 -l sample.txt
+
 # comment line starts with '#'
-showipport
-setip 192.168.10.10
+
+#showipport
+#setip 192.168.10.10
+#
+
+# Read registers
+# SiTCP Synthesis data.  YY MM DD NN
+rd 0xffffff00 4
+#
+# Various
+rd 0xffffff04 12 
+#
+# SiTCP and TCP control (0x01)
+rd 0xffffff10 1
+#
+# MAC Address
+rd 0xffffff12 6
+#
+# IP Address
+rd 0xffffff18 4
+#
+# TCP port.  Default: 0x18
+rd 0xffffff1c 2
+#
+# TCP MSS (0x05b4)
+rd 0xffffff20 2
+#
+# RBCP port
+rd 0xffffff22 2
+#
+# set not to use nagle algorithm
+#wr 0xffffff10 0
