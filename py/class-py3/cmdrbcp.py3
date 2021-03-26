@@ -238,7 +238,7 @@ Use help or help <topic> command to get commands under interactive shell.
                         action = 'store_true',
                         help = 'debug (not used)')
     parser.add_argument('-l',
-                        '--string',
+                        '--load',
                         dest = 'filename',
                         type = str,
                         help = 'non-interactive.  Load this file and excute the commands in that file')
