@@ -14,6 +14,22 @@ import readline
 target_ip_address = '192.168.10.16'
 target_port       = 4660
 
+def print_bytes(data, bytes_per_line = 4, base_address = 0):
+    for i in range(len(data)):
+        if (i + 1) % bytes_per_line == 1:
+            # first column.  print line address, then print a byte.
+            print('{:08x}  '.format(base_address + i), end = '')
+            print('{:02x}'.format(data[i]), end = '')
+        else:
+            # the other column.  print space before a byte.
+            print(' {:02x}'.format(data[i]), end = '')
+        if (i + 1) % bytes_per_line == 0:
+            # newline for each lines
+            print()
+    if (len(data) % bytes_per_line) != 0:
+        # newline if not enough bytes_per_line
+        print()
+
 class MyCmd(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
@@ -107,10 +123,7 @@ class MyCmd(cmd.Cmd):
             #sys.exit(e)
             print(e)
         else:
-            print('0x ', end = '')
-            for i in data:
-                print('%02X' % i, end=' ')
-            print()
+            print_bytes(data, bytes_per_line = 4, base_address = address)
 
     ###### wr command ######
     def help_wr(self):
