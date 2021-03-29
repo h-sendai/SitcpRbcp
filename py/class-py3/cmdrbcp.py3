@@ -123,7 +123,7 @@ class MyCmd(cmd.Cmd):
             #sys.exit(e)
             print(e)
         else:
-            print_bytes(data, bytes_per_line = 4, base_address = address)
+            print_bytes(data, bytes_per_line = command_options.bytes_per_line, base_address = address)
 
     ###### wr command ######
     def help_wr(self):
@@ -316,6 +316,12 @@ Use help or help <topic> command to get commands under interactive mode.
                         type = float,
                         default = 0.5,
                         help = 'set timeout sec (default: 0.5 sec)')
+    parser.add_argument('-n',
+                        '--bytes-per-line',
+                        dest = 'bytes_per_line',
+                        type = int,
+                        default = 8,
+                        help = 'print bytes per line in rd command  (default: 8)')
     parser.add_argument('-l',
                         '--load',
                         dest = 'filename',
