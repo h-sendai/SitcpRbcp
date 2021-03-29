@@ -282,6 +282,8 @@ def main():
 
     cmd_example = '''
 Example:
+% cmdrbcp.py3 -h
+    display command usage, options and exit.
 % cmdrbcp.py3
     interactive command.  Use 192.168.10.16 and port 4660.
 % cmdrbcp.py3 192.168.10.10
