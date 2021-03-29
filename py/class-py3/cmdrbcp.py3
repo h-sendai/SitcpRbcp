@@ -14,29 +14,6 @@ import readline
 target_ip_address = '192.168.10.16'
 target_port       = 4660
 
-# history save support
-# histfile, histfile_size, preloop() and postloop()
-# From stackovewflow: https://stackoverflow.com/questions/39495024/
-#                     https://stackoverflow.com/a/39495060
-# Question by Martijn Pieters: https://stackoverflow.com/users/100297/martijn-pieters
-# Answer by Martijn Pieters: https://stackoverflow.com/users/100297/martijn-pieters
-# CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
-histfile          = os.path.expanduser('~/.cmdrbcp_history')
-histfile_size     = 1000
-
-# _append_slash_if_dir():
-# use in complete_load() (load command filename completion)
-# From stackovewflow: https://stackoverflow.com/questions/16826172/
-#                     https://stackoverflow.com/a/27256663
-# Question by jinserk: https://stackoverflow.com/users/2392124/jinserk
-# Answer by meffie: https://stackoverflow.com/users/1070181/meffie
-# CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
-def _append_slash_if_dir(p):
-    if p and os.path.isdir(p) and p[-1] != os.sep:
-        return p + os.sep
-    else:
-        return p
-
 class MyCmd(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
@@ -228,7 +205,14 @@ class MyCmd(cmd.Cmd):
     # Question by jinserk: https://stackoverflow.com/users/2392124/jinserk
     # Answer by meffie: https://stackoverflow.com/users/1070181/meffie
     # CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
+    #
     def complete_load(self, text, line, begidx, endidx):
+        def _append_slash_if_dir(p):
+            if p and os.path.isdir(p) and p[-1] != os.sep:
+                return p + os.sep
+            else:
+                return p
+
         before_arg = line.rfind(" ", 0, begidx)
         if before_arg == -1:
             return # arg not found
@@ -249,17 +233,29 @@ class MyCmd(cmd.Cmd):
     # Question by Fatih Karatana: https://stackoverflow.com/users/209623/fatih-karatana
     # Answer by John Doe: https://stackoverflow.com/users/1987886/john-doe
     # CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
+    #
     def emptyline(self):
         pass
     
+    # history save support
+    # histfile, histfile_size, preloop() and postloop()
+    # From stackovewflow: https://stackoverflow.com/questions/39495024/
+    #                     https://stackoverflow.com/a/39495060
+    # Question by Martijn Pieters: https://stackoverflow.com/users/100297/martijn-pieters
+    # Answer by Martijn Pieters: https://stackoverflow.com/users/100297/martijn-pieters
+    # CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
+    #
+    histfile          = os.path.expanduser('~/.cmdrbcp_history')
+    histfile_size     = 1000
+
     def preloop(self):
-        if readline and os.path.exists(histfile):
-            readline.read_history_file(histfile)
+        if readline and os.path.exists(self.histfile):
+            readline.read_history_file(self.histfile)
 
     def postloop(self):
         if readline:
-            readline.set_history_length(histfile_size)
-            readline.write_history_file(histfile)
+            readline.set_history_length(self.histfile_size)
+            readline.write_history_file(self.histfile)
 
 def sig_int(signo, frame):
     sys.exit(0)
