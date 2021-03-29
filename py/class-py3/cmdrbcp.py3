@@ -113,7 +113,7 @@ class MyCmd(cmd.Cmd):
         if command_options.debug:
             print('debug: rd address 0x%0x (dec %d), length %d' % (address, address, length))
         rbcp = SitcpRbcp.SitcpRbcp()
-        rbcp.set_timeout(0.5)
+        rbcp.set_timeout(command_options.timeout)
         try:
             data = rbcp.read_registers(target_ip_address, address, length)
         except socket.error as e:
@@ -153,7 +153,7 @@ class MyCmd(cmd.Cmd):
             print('debug: wr address 0x%0x (dec %d), data 0x%0x, format %s' % (address, address, value, format))
         rbcp = SitcpRbcp.SitcpRbcp()
         #rbcp.set_verify_mode()
-        rbcp.set_timeout(0.5)
+        rbcp.set_timeout(command_options.timeout)
         try:
             rbcp.write_register_f(target_ip_address, address, format, value)
         except socket.error as e:
@@ -310,6 +310,12 @@ Use help or help <topic> command to get commands under interactive mode.
                         dest = 'quiet',
                         action = 'store_true',
                         help = 'do not print intro')
+    parser.add_argument('-t',
+                        '--timeout',
+                        dest = 'timeout',
+                        type = float,
+                        default = 0.5,
+                        help = 'set timeout sec (default: 0.5 sec)')
     parser.add_argument('-l',
                         '--load',
                         dest = 'filename',
