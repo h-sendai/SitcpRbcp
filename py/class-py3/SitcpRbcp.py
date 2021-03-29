@@ -91,7 +91,7 @@ if __name__ == '__main__':
 """
 
 __author__  = 'Hiroshi Sendai'
-__data__    = 'Nov. 16, 2013'
+__date__    = 'Nov. 16, 2013'
 __version__ = '1.1'
 __license__ = 'MIT/X'
 
