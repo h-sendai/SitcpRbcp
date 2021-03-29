@@ -296,6 +296,11 @@ Use help or help <topic> command to get commands under interactive mode.
                         dest = 'debug',
                         action = 'store_true',
                         help = 'some debug printing')
+    parser.add_argument('-q',
+                        '--quiet',
+                        dest = 'quiet',
+                        action = 'store_true',
+                        help = 'do not print intro')
     parser.add_argument('-l',
                         '--load',
                         dest = 'filename',
@@ -331,11 +336,12 @@ Use help or help <topic> command to get commands under interactive mode.
             sys.exit(0)
 
     # then enter/switch to interactive mode
-    p.intro  = 'Trying IP address: %s, Port: %d\n' % (target_ip_address, target_port)
-    p.intro += 'Type help to get available commands.  Type q to quit\n'
-    p.intro += 'help <command> displays each <command> help.  Example: help rd\n'
-    p.intro += 'command/filename completion by TAB key, history and command line editing available\n'
-    p.intro += 'Good luck!'
+    if not command_options.quiet:
+        p.intro  = 'Trying IP address: %s, Port: %d\n' % (target_ip_address, target_port)
+        p.intro += 'Type help to get available commands.  Type q to quit\n'
+        p.intro += 'help <command> displays each <command> help.  Example: help rd\n'
+        p.intro += 'command/filename completion by TAB key, history and command line editing available\n'
+        p.intro += 'Good luck!'
     p.cmdloop()
 
 if __name__ == '__main__':
