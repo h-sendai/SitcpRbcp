@@ -12,7 +12,11 @@ command line tool: cmdrbcp.py3
 
 ```
 % cmdrbcp.py3 -h
-usage: cmdrbcp.py3 [-h] [-d] [-l FILENAME] [-i] [ip_address] [port]
+usage: cmdrbcp.py3 [-h] [-d] [-q] [-t TIMEOUT] [-n BYTES_PER_LINE]
+                   [-l FILENAME] [-i]
+                   [ip_address] [port]
+
+Yet another RBCP program using python3
 
 positional arguments:
   ip_address            IP Address
@@ -20,7 +24,12 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -d, --debug           debug (not used)
+  -d, --debug           some debug printing
+  -q, --quiet           do not print intro
+  -t TIMEOUT, --timeout TIMEOUT
+                        set timeout sec (default: 0.5 sec)
+  -n BYTES_PER_LINE, --bytes-per-line BYTES_PER_LINE
+                        print bytes per line in rd command (default: 8)
   -l FILENAME, --load FILENAME
                         non-interactive. Load this file and excute the
                         commands in that file
@@ -28,6 +37,8 @@ optional arguments:
                         interactive mode
 
 Example:
+% cmdrbcp.py3 -h
+    display command usage, options and exit.
 % cmdrbcp.py3
     interactive command.  Use 192.168.10.16 and port 4660.
 % cmdrbcp.py3 192.168.10.10
