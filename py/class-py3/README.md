@@ -85,9 +85,10 @@ RBCP> q
 %
 ```
 
-### history
+### command/filename completion and history
 
 In interactive mode, like bash, you can edit the command line,
 recall previous command by ctrl-p, incremental search by ctrl-s.
+You can complete command or filename for load command by tab key.
 Also command input in interactive mode will be saved in
 ~/.cmdrbcp_history.  This file will be read in the next invocation.
