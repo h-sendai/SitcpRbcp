@@ -85,7 +85,7 @@ RBCP> q
 %
 ```
 
-### command/filename completion and history
+### Command line editing, command/filename completion and saving history
 
 In interactive mode, like bash, you can edit the command line,
 recall previous command by ctrl-p, incremental search by ctrl-s.
