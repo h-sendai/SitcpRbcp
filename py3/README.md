@@ -19,7 +19,7 @@ For example, if your PATH environment variable have
 
 ```
 % cd $HOME/bin
-% ln -s path/to/cmdrbcp.py3
+% ln -s path/to/SitcpRbcp/py3/cmdrbcp.py3
 % ls -l cmdrbcp.py3
 ```
 
