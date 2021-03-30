@@ -6,7 +6,22 @@ Library: SitcpRbcp.py
 
 command line tool: cmdrbcp.py3
 
-## cmdrbcp.py3
+## cmdrbcp.py3 Setup
+
+```
+% git clone https://github.com/h-sendai/SitcpRbcp.git
+```
+
+Then create symbolic link file to cmdrbcp.py3
+in the PATH searchable directory.
+For example, if your PATH environment variable have
+``$HOME/bin``; then
+
+```
+% cd $HOME/bin
+% ln -s path/to/cmdrbcp.py3
+% ls -l cmdrbcp.py3
+```
 
 ### command line options
 
