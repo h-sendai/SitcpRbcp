@@ -13,6 +13,7 @@ import readline
 
 target_ip_address = '192.168.10.16'
 target_port       = 4660
+timeout           = 0.5
 
 def print_bytes(data, bytes_per_line = 4, base_address = 0):
     for i in range(len(data)):
@@ -91,6 +92,13 @@ class MyCmd(cmd.Cmd):
         global target_port
         print('Current IP address and port for RBCP: %s port %d' % (target_ip_address, target_port))
 
+    ###### settimeout command #####
+    def help_settimeout(self):
+        print('Set r/w timeout in seconds')
+    def do_settimeout(self, args):
+        global timeout
+        timeout = float(args)
+
     ###### rd command ######
     def help_rd(self):
         print('Read a register and print its value in HEX.')
@@ -113,7 +121,8 @@ class MyCmd(cmd.Cmd):
         if command_options.debug:
             print('debug: rd address 0x%0x (dec %d), length %d' % (address, address, length))
         rbcp = SitcpRbcp.SitcpRbcp()
-        rbcp.set_timeout(command_options.timeout)
+        global timeout
+        rbcp.set_timeout(timeout)
         try:
             data = rbcp.read_registers(target_ip_address, address, length)
         except socket.error as e:
@@ -153,7 +162,8 @@ class MyCmd(cmd.Cmd):
             print('debug: wr address 0x%0x (dec %d), data 0x%0x, format %s' % (address, address, value, format))
         rbcp = SitcpRbcp.SitcpRbcp()
         #rbcp.set_verify_mode()
-        rbcp.set_timeout(command_options.timeout)
+        global timeout
+        rbcp.set_timeout(timeout)
         try:
             rbcp.write_register_f(target_ip_address, address, format, value)
         except socket.error as e:
@@ -276,6 +286,7 @@ def sig_int(signo, frame):
 def main():
     global target_ip_address
     global target_port
+    global timeout
     global command_options
 
     signal.signal(signal.SIGINT, sig_int)
@@ -316,7 +327,7 @@ Use help or help <topic> command to get commands under interactive mode.
                         '--timeout',
                         dest = 'timeout',
                         type = float,
-                        default = 0.5,
+                        default = timeout, # global var
                         help = 'set timeout sec (default: 0.5 sec)')
     parser.add_argument('-n',
                         '--bytes-per-line',
@@ -349,6 +360,7 @@ Use help or help <topic> command to get commands under interactive mode.
     
     target_ip_address = command_options.ip_address
     target_port       = command_options.port
+    timeout           = command_options.timeout
 
     p = MyCmd()
     if command_options.filename:
