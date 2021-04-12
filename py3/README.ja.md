@@ -1,23 +1,21 @@
 # RBCP Libaray/command for python3
 
-[日本語での説明](README.ja.md)
+さらに別のRBCPプログラム(python3用)。
 
-Yet another RBCP program using python3.
+ライブラリ: SitcpRbcp.py
 
-Library: SitcpRbcp.py
+コマンドラインツール: cmdrbcp.py3
 
-command line tool: cmdrbcp.py3
-
-## cmdrbcp.py3 Setup
+## cmdrbcp.py3 セットアップ
 
 ```
 % git clone https://github.com/h-sendai/SitcpRbcp.git
 ```
 
-Then create symbolic link file to cmdrbcp.py3
-in the PATH searchable directory.
-For example, if your PATH environment variable have
-``$HOME/bin``; then
+を実行後、PATH環境変数がとっているディレクトリから
+cmdrbcp.py3へシンボリックリンクをはるのが簡単です。
+たとえばPATH環境変数に``$HOME/bin``が入っているなら
+(ログインシェルがbashなら入っています)次のようにします。
 
 ```
 % cd $HOME/bin
@@ -102,10 +100,11 @@ RBCP> q
 %
 ```
 
-### Command line editing, command/filename completion and saving history
+### コマンド行編集、コマンド名・ファイル名の補完およびヒストリーの保存
 
-In interactive mode, like bash, you can edit the command line,
-recall previous command by ctrl-p, incremental search by ctrl-s.
-You can complete command or filename for load command by tab key.
-Also command input in interactive mode will be saved in
-~/.cmdrbcp_history.  This file will be read in the next invocation.
+インタラクティブモードの場合、bashのようにコマンドライン編集、
+ctrl-pでの以前使ったコマンドの呼び出し、ctrl-sでのインクリメンタルサーチ
+ができます。
+タブキーでコマンド名およびloadコマンドで使うファイル名の補完が可能です。
+インタラクティブモードで入力されたコマンドは``~/.cmdrbcp_history``に
+保存されます。次回起動時にはこのファイルが読まれてヒストリーに入ります。
