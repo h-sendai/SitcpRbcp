@@ -23,7 +23,7 @@ cmdrbcp.py3へシンボリックリンクをはるのが簡単です。
 % ls -l cmdrbcp.py3
 ```
 
-### command line options
+### コマンドラインオプション
 
 ```
 % cmdrbcp.py3 -h
@@ -69,7 +69,7 @@ Example:
 Use help or help <topic> command to get commands under interactive mode.
 ```
 
-### interactive mode command
+### インタラクティブモードでのコマンド
 
 ```
 % ./cmdrbcp.py3
