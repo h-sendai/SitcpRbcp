@@ -100,6 +100,63 @@ RBCP> q
 %
 ```
 
+#### history [n]
+
+直近で入力したコマンドをn個表示します(nのデフォルト: 5)
+
+#### rd address length
+
+adressからlengthバイト分読みだしを行います。addressは0xを付けて16進数、
+lengthは10進数で表します。読み出したデータはアドレスとともに
+1行8バイトで16進数で表示します。
+
+例:
+
+```
+RBCP> rd 0xffffff00 32
+```
+
+#### setip
+
+対象となるSiTCP機器のIPアドレスをセットします。デフォルトは192.168.10.16です。
+
+#### setport
+
+対象となるSiTCP機器のRBCP用ポート番号をセットします。デフォルトは4660です。
+
+#### showipport
+
+現在対象としているSiTCP機器のIPアドレス、ポート番号を表示します。
+
+#### settimeout
+
+read、writeのタイムアウト値をセットします。デフォルトは0.5秒です。
+
+#### wr address value [format]
+
+address、valueを指定してRBCPでデータを書きます。
+フォーマットはpython3 structモジュールで使われるフォーマットで
+指定します。
+
+例:
+
+```
+RBCP> wr 0x0 0x01 >B (アドレス0x0に0x01を書く)
+RBCP> wr 0x0 0x01 >I (アドレス0x0に0x00000001 (big endianで4バイト整数値1)を書く)
+```
+
+#### wrb address value
+
+addressに1バイトデータ(value)を書きます。
+
+#### wrs address value
+
+addressに2バイトデータ(value)を書きます。
+
+#### wrw address value
+
+addressに4バイトデータ(value)を書きます。
+
 ### コマンド行編集、コマンド名・ファイル名の補完およびヒストリーの保存
 
 インタラクティブモードの場合、bashのようにコマンドライン編集、
@@ -108,3 +165,22 @@ ctrl-pでの以前使ったコマンドの呼び出し、ctrl-sでのインク�
 タブキーでコマンド名およびloadコマンドで使うファイル名の補完が可能です。
 インタラクティブモードで入力されたコマンドは``~/.cmdrbcp_history``に
 保存されます。次回起動時にはこのファイルが読まれてヒストリーに入ります。
+
+### バッチでの実行
+
+ファイルにコマンドを書いておいて(例: [sample.txt](sample.txt))
+インタラクティブモードから
+```
+RBCP> load sample.txt
+```
+とするか、-lオプションを使って
+```
+$ cmdrbcp.py3 -l sample.txt
+```
+として実行します。実行後、続けてコマンドを入力する場合はさらに
+-iオプションを付けて
+```
+$ cmdrbcp.py3 -l sample.txt -i
+```
+とするとsample.txtの各行を実行後、``RBCP>``プロンプトを表示し入力待ちに
+なります。
