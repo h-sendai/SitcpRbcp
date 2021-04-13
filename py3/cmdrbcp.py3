@@ -250,6 +250,28 @@ class MyCmd(cmd.Cmd):
             completions.append(path.replace(fixed, "", 1))
         return completions
 
+    ##### history command #####
+    def help_history(self):
+        print('history [n]')
+        print('    display command history.')
+        print('    if n, display most recent n commands.  default is 5')
+    def do_history(self, cmd_arg):
+        if cmd_arg == '':
+            n_display = 5
+        else:
+            try:
+                n_display = int(cmd_arg)
+            except Exception as e:
+                print(e.args[0])
+                return None
+        hist_size = readline.get_current_history_length()
+        first = 1
+        last = hist_size # last: fixed
+        if hist_size > n_display:
+            first = hist_size - n_display + 1
+        for i in range(first, last+1):
+            print(readline.get_history_item(i))
+
     # Don't re-execute previous command if enter empty lines
     # From stackovewflow: https://stackoverflow.com/questions/16479029/
     #                     https://stackoverflow.com/a/21066546
