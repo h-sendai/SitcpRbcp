@@ -215,11 +215,16 @@ class MyCmd(cmd.Cmd):
         print('       Lines start with "#" in the file will be ignored (comment).')
         print('       You can complete the filename by hitting TAB.')
     def do_load(self, args):
+        def remove_comment(line):
+            return line.strip().split('#')[0].strip()
         with open(args, 'r') as f:
             for line in f:
-                if line[0] == '#': # comment
-                    continue
-                cmd.Cmd.onecmd(self, line)
+                line = remove_comment(line)
+                if line == '':
+                    # the line does not have any commands (comment only)
+                    pass
+                else:
+                    cmd.Cmd.onecmd(self, line)
 
     ##### load filename completion #####
     # complete_load():
