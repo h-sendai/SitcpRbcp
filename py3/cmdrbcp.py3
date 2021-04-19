@@ -212,7 +212,7 @@ class MyCmd(cmd.Cmd):
         print('load file and execute the lines')
         print('Usage: load filename')
         print('       read filename and excute it as if typed on the prompt line.')
-        print('       Lines start with "#" in the file will be ignored (comment).')
+        print('       Comments begin with the # character and continue until the end of the line.')
         print('       You can complete the filename by hitting TAB.')
     def do_load(self, args):
         def remove_comment(line):

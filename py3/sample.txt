@@ -1,7 +1,7 @@
 # cmdrbcp.py3 load command sample text
 # Usage: cmdrbcp.py3 -l sample.txt
 
-# comment line starts with '#'
+# Comments begin with the # character and continue until the end of the line.
 
 #showipport
 #setip 192.168.10.10
@@ -10,6 +10,10 @@
 # Read registers
 # SiTCP Synthesis data.  YY MM DD NN
 rd 0xffffff00 4
+
+# same but comment in the line
+rd 0xffffff00 4 # YY MM DD NN
+
 #
 # Various
 rd 0xffffff04 12 
