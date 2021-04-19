@@ -27,9 +27,7 @@ cmdrbcp.py3へシンボリックリンクをはるのが簡単です。
 
 ```
 % cmdrbcp.py3 -h
-usage: cmdrbcp.py3 [-h] [-d] [-q] [-t TIMEOUT] [-n BYTES_PER_LINE]
-                   [-l FILENAME] [-i]
-                   [ip_address] [port]
+usage: cmdrbcp.py3 [-h] [-d] [-q] [-t TIMEOUT] [-n BYTES_PER_LINE] [-l FILENAME] [-i] [ip_address] [port]
 
 Yet another RBCP program using python3
 
@@ -46,10 +44,8 @@ optional arguments:
   -n BYTES_PER_LINE, --bytes-per-line BYTES_PER_LINE
                         print bytes per line in rd command (default: 8)
   -l FILENAME, --load FILENAME
-                        non-interactive. Load this file and excute the
-                        commands in that file
-  -i, --interactive     After load and execute via -l option, switch to
-                        interactive mode
+                        non-interactive. Load this file and excute the commands in that file
+  -i, --interactive     After load and execute via -l option, switch to interactive mode
 
 Example:
 % cmdrbcp.py3 -h
@@ -72,7 +68,7 @@ Use help or help <topic> command to get commands under interactive mode.
 ### インタラクティブモードでのコマンド
 
 ```
-% ./cmdrbcp.py3
+% cmdrbcp.py3
 Trying IP address: 192.168.10.16, Port: 4660
 Type help to get available commands.  Type q to quit
 help <command> displays each <command> help.  Example: help rd
@@ -82,7 +78,8 @@ RBCP> help
 
 Documented commands (type help <topic>):
 ========================================
-EOF  help  load  q  quit  rd  setip  setport  showipport  wr  wrb  wrs  wrw
+EOF   history  q     rd     setport     showipport  wrb  wrw
+help  load     quit  setip  settimeout  wr          wrs
 
 RBCP> help wrb
 Usage: wrb address data
