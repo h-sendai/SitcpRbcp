@@ -189,3 +189,23 @@ $ cmdrbcp.py3 -l sample.txt -i
 rd 0xffffff00 4 # YY MM DD NN
 ```
 
+### スクリプト化
+
+シェルスクリプトのように実行ファイル化することも可能です。
+第1行目は
+```
+#!/usr/bin/env -S cmdrbcp.py3 -l
+```
+のように``env``コマンドを``-S``オプション付きで書いてください。
+例:
+```
+#!/usr/bin/env -S cmdrbcp.py3 -l
+
+rd 0xffffff00 16
+```
+というファイルを作ったあと(たとえばread-registersというファイル名に保存)
+```
+chmod +x read-registers
+./read-registers
+```
+で実行できます。
