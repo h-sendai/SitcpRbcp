@@ -298,6 +298,11 @@ class MyCmd(cmd.Cmd):
             print(e)
             return None
 
+        if len(data) > 256:
+            print('data file too large: %d bytes' % (len(data)))
+            print('256 bytes or smaller is supported')
+            return None
+
         rbcp = SitcpRbcp.SitcpRbcp()
         #rbcp.set_verify_mode()
         global timeout
