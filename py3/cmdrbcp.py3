@@ -277,6 +277,41 @@ class MyCmd(cmd.Cmd):
         for i in range(first, last+1):
             print(readline.get_history_item(i))
 
+    ##### wr_from_file #####
+    def help_wr_from_file(self):
+        print('Usage: wr_from_file address filename')
+        print('       read filename and write to address')
+    def do_wr_from_file(self, args):
+        n_args = len(args.split())
+        if n_args != 2:
+            print('requires 2 arguments, but %d argument(s)' % (n_args))
+            self.help_wr_from_file()
+
+        address_string, filename_string = args.split()
+        filename = os.path.expanduser(filename_string)
+        address  = int(address_string, 0)
+
+        try:
+            with open(filename, 'rb') as f:
+                data = f.read()
+        except Exception as e:
+            print(e)
+            return None
+
+        format = '>'  + 'B'*len(data)
+        rbcp = SitcpRbcp.SitcpRbcp()
+        #rbcp.set_verify_mode()
+        global timeout
+        rbcp.set_timeout(timeout)
+        try:
+            rbcp.write_registers(target_ip_address, address, len(data), id = 1, data = data)
+        except socket.error as e:
+            print(e)
+        except Exception as e:
+            print(e)
+
+    complete_wr_from_file = complete_load
+
     # Don't re-execute previous command if enter empty lines
     # From stackovewflow: https://stackoverflow.com/questions/16479029/
     #                     https://stackoverflow.com/a/21066546
