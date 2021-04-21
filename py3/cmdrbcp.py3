@@ -298,7 +298,6 @@ class MyCmd(cmd.Cmd):
             print(e)
             return None
 
-        format = '>'  + 'B'*len(data)
         rbcp = SitcpRbcp.SitcpRbcp()
         #rbcp.set_verify_mode()
         global timeout
