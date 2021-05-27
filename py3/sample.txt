@@ -1,5 +1,6 @@
 # cmdrbcp.py3 load command sample text
 # Usage: cmdrbcp.py3 -l sample.txt
+# register info: https://www.sitcp.net/doc/SiTCP.pdf
 
 # Comments begin with the # character and continue until the end of the line.
 
@@ -38,3 +39,7 @@ rd 0xffffff22 2
 #
 # set not to use nagle algorithm
 #wr 0xffffff10 0
+
+# We can write any values to user area (0xffffff3c - 0xffffff3f (4 bytes))
+wr 0xffffff3c 0xff
+rd 0xffffff3c 1
