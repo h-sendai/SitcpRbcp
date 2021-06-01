@@ -14,4 +14,4 @@ Read [py3](py3).
 
 ## SiTCP documents
 
-https://www.sitcp.net/ (operated by Bee Beans Techonologies Co. Ltd)
+https://www.sitcp.net/ (operated by Bee Beans Technologies Co. Ltd)
