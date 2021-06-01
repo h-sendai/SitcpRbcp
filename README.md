@@ -11,3 +11,7 @@ Yet another Sitcp RBCP program.
 py3/cmdrbcp.py3: interactive rbcp shell.  command and filename
 completion enabled. Need py3/SitcpRbcp.py module.
 Read [py3](py3).
+
+## SiTCP documents
+
+https://www.sitcp.net/ (operated by Bee Beans Techonologies Co. Ltd)
