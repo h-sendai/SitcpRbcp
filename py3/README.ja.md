@@ -93,6 +93,9 @@ RBCP> rd 0xffffff10 1
 RBCP> wrb 0xffffff10 0
 RBCP> rd 0xffffff10 1
 0x 00
+RBCP> wr 0xffffff10 0b00001001 (MAC flow on, Nagle buffering on)
+RBCP> rd 0xffffff10 1
+ffffff10  09
 RBCP> q
 %
 ```
