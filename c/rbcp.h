@@ -33,6 +33,7 @@ struct sitcp_rbcp_header {
     unsigned int  address;
 };
 
+extern int open_rbcp(char *remote_ip);
 extern int get_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *buf, int len);
 extern unsigned char get_reg_byte(char *remote_ip, unsigned int address);
 extern unsigned short get_reg_short(char *remote_ip, unsigned int address);
