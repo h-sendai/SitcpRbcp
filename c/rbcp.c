@@ -84,7 +84,7 @@ int get_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *bu
     rbcp_request_header.cmd_flag = 0xc0; /* READ */
     rbcp_request_header.id       = 1;
     rbcp_request_header.length   = len;
-    rbcp_request_header.address  = ntohl(address);
+    rbcp_request_header.address  = htonl(address);
     int n;
     n = write(sockfd, &rbcp_request_header, sizeof(rbcp_request_header));
     if (n < 0) {
@@ -124,7 +124,7 @@ int set_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *bu
     rbcp_request_header.cmd_flag = 0x80; /* WRITE */
     rbcp_request_header.id       = 1;
     rbcp_request_header.length   = len;
-    rbcp_request_header.address  = ntohl(address);
+    rbcp_request_header.address  = htonl(address);
     
     struct iovec iov[2];
     iov[0].iov_base = &rbcp_request_header;
