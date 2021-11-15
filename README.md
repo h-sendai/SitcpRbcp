@@ -2,6 +2,7 @@
 
 Yet another Sitcp RBCP program.
 
+- c: for C standalone.  for now only READ method included.
 - cpp: for C++ with DAQ-Middleware Sock library.
 - standalone-cpp: for C++ without DAQ-Middleware Sock library.
 - py2/old: python2 library (function) (not maintained)
