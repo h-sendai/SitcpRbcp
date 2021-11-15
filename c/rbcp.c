@@ -23,6 +23,7 @@ static int udp_socket(void)
     return sockfd;
 }
 
+/* connect() udp socket to use read(), readv(), write(), writev() */
 static int connect_udp(int sockfd, char *host, int port)
 {
     struct sockaddr_in servaddr;
@@ -71,19 +72,19 @@ int open_rbcp(char *remote_ip)
 
 int get_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *buf, int len)
 {
-    struct sitcp_rbcp_header rbcp_request_header, rbcp_reply_header;
-
-    rbcp_request_header.ver_type = 0xff;
-    rbcp_request_header.cmd_flag = 0xc0; /* READ */
-    rbcp_request_header.id       = 1;
-    rbcp_request_header.length   = len;
-    rbcp_request_header.address  = ntohl(address);
-    
     int sockfd = open_rbcp(remote_ip);
     if (sockfd < 0) {
         return -1;
     }
 
+    struct sitcp_rbcp_header rbcp_request_header, rbcp_reply_header;
+
+    /* send read request */
+    rbcp_request_header.ver_type = 0xff;
+    rbcp_request_header.cmd_flag = 0xc0; /* READ */
+    rbcp_request_header.id       = 1;
+    rbcp_request_header.length   = len;
+    rbcp_request_header.address  = ntohl(address);
     int n;
     n = write(sockfd, &rbcp_request_header, sizeof(rbcp_request_header));
     if (n < 0) {
@@ -91,17 +92,18 @@ int get_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *bu
         return -1;
     }
 
+    /* receive read request reply */
     struct iovec iov[2];
     iov[0].iov_base = &rbcp_reply_header;
     iov[0].iov_len  = sizeof(rbcp_reply_header);
     iov[1].iov_base = buf;
     iov[1].iov_len  = len;
-    
     n = readv(sockfd, iov, sizeof(iov)/sizeof(iov[0]));
     if (n < 0) {
         warn("rbcp reply packet from %s read failed", remote_ip);
         return -1;
     }
+
     /* To Do */
     /* error check here */
 
@@ -110,31 +112,32 @@ int get_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *bu
 
 int set_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *buf, int len)
 {
+    int sockfd = open_rbcp(remote_ip);
+    if (sockfd < 0) {
+        return -1;
+    }
+
     struct sitcp_rbcp_header rbcp_request_header, rbcp_reply_header;
 
+    /* send write request packet */
     rbcp_request_header.ver_type = 0xff;
     rbcp_request_header.cmd_flag = 0x80; /* WRITE */
     rbcp_request_header.id       = 1;
     rbcp_request_header.length   = len;
     rbcp_request_header.address  = ntohl(address);
     
-    int sockfd = open_rbcp(remote_ip);
-    if (sockfd < 0) {
-        return -1;
-    }
-
     struct iovec iov[2];
     iov[0].iov_base = &rbcp_request_header;
     iov[0].iov_len  = sizeof(rbcp_request_header);
     iov[1].iov_base = buf;
     iov[1].iov_len  = len;
-    
     int n;
     n = writev(sockfd, iov, sizeof(iov)/sizeof(iov[0]));
     if (n < 0) {
         warn("rbcp send write packet to %s failed", remote_ip);
     }
 
+    /* receive write reply packet */
     unsigned char *reply_data_buf = malloc(len);
     if (reply_data_buf < 0) {
         warn("malloc for write reply data");
