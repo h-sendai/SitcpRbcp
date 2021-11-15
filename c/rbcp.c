@@ -166,6 +166,32 @@ int set_reg_byte(char *remote_ip, unsigned int address, unsigned char data)
     return 0;
 }
 
+int set_reg_short(char *remote_ip, unsigned int address, unsigned short data)
+{
+    int n;
+    data = htons(data);
+    n = set_reg_byte_stream(remote_ip, address, (unsigned char *)&data, sizeof(data));
+    if (n < 0) {
+        warn("write to %s failed", remote_ip);
+        return -1;
+    }
+    
+    return 0;
+}
+
+int set_reg_int(char *remote_ip, unsigned int address, unsigned int data)
+{
+    int n;
+    data = htonl(data);
+    n = set_reg_byte_stream(remote_ip, address, (unsigned char *)&data, sizeof(data));
+    if (n < 0) {
+        warn("write to %s failed", remote_ip);
+        return -1;
+    }
+    
+    return 0;
+}
+
 char get_reg_byte(char *remote_ip, unsigned int address)
 {
     unsigned char buf[1];
@@ -219,6 +245,8 @@ int main(int argc, char *argv[])
     printf("%x\n", reg);
 
     set_reg_byte("192.168.10.16", 0xffffff3c, 0xfe);
+    set_reg_short("192.168.10.16", 0xffffff3c, 0xfeed);
+    set_reg_int("192.168.10.16", 0xffffff3c, 0xfeedface);
     return 0;
 }
 #endif
