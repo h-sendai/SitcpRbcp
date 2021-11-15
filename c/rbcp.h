@@ -38,7 +38,7 @@ extern int   get_reg_byte_stream(char *remote_ip, unsigned int address, unsigned
 extern char  get_reg_byte(char *remote_ip, unsigned int address);
 extern short get_reg_short(char *remote_ip, unsigned int address);
 extern int   get_reg_int(char *remote_ip, unsigned int address);
-extern int   set_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *buf, int len)
-extern int   set_reg_byte(char *remote_ip, unsigned int address, unsigned char data)
+extern int   set_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *buf, int len);
+extern int   set_reg_byte(char *remote_ip, unsigned int address, unsigned char data);
 
 #endif
