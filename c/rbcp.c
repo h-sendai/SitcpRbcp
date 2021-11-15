@@ -10,6 +10,16 @@ static int udp_socket(void)
         return -1;
     }
 
+    struct timeval tm_out = { 2, 0 }; /* timeout 2 seconds */
+    if (setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &tm_out, sizeof(tm_out)) < 0) {
+        warn("socket timeout setting for READ");
+        return -1;
+    }
+    if (setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, &tm_out, sizeof(tm_out)) < 0) {
+        warn("socket timeout setting for WRITE");
+        return -1;
+    }
+
     return sockfd;
 }
 
@@ -144,42 +154,71 @@ int set_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *bu
     return 0;
 }
 
-unsigned char get_reg_byte(char *remote_ip, unsigned int address)
+int set_reg_byte(char *remote_ip, unsigned int address, unsigned char data)
+{
+    int n;
+    n = set_reg_byte_stream(remote_ip, address, &data, sizeof(data));
+    if (n < 0) {
+        warn("write to %s failed", remote_ip);
+        return -1;
+    }
+    
+    return 0;
+}
+
+char get_reg_byte(char *remote_ip, unsigned int address)
 {
     unsigned char buf[1];
     memset(buf, 0, sizeof(buf));
-    get_reg_byte_stream(remote_ip, address, buf, sizeof(buf));
-    unsigned char rv = buf[0];
+    if (get_reg_byte_stream(remote_ip, address, buf, sizeof(buf)) < 0) {
+        return -1;
+    }
+    char rv = buf[0];
     return rv;
 }
 
-unsigned short get_reg_short(char *remote_ip, unsigned int address)
+short get_reg_short(char *remote_ip, unsigned int address)
 {
     unsigned char buf[2];
     memset(buf, 0, sizeof(buf));
-    get_reg_byte_stream(remote_ip, address, buf, sizeof(buf));
-    unsigned short rv = ntohs(*(unsigned short *)buf);
+    if (get_reg_byte_stream(remote_ip, address, buf, sizeof(buf)) < 0) {
+        return -1;
+    }
+    short rv = ntohs(*(unsigned short *)buf);
     return rv;
 }
 
-unsigned int get_reg_int(char *remote_ip, unsigned int address)
+int get_reg_int(char *remote_ip, unsigned int address)
 {
     unsigned char buf[4];
     memset(buf, 0, sizeof(buf));
-    get_reg_byte_stream(remote_ip, address, buf, sizeof(buf));
-    unsigned int rv = ntohl(*(unsigned int *)buf);
+    if (get_reg_byte_stream(remote_ip, address, buf, sizeof(buf)) < 0) {
+        return -1;
+    }
+    int rv = ntohl(*(unsigned int *)buf);
     return rv;
 }
 
 #ifdef DO_MAIN
 int main(int argc, char *argv[])
 {
-    unsigned int reg = get_reg_int("192.168.10.16", 0xffffff00);
+    int reg;
+    reg = get_reg_int("192.168.10.16", 0xffffff00);
+    if (reg < 0) {
+        fprintf(stderr, "error");
+        exit(1);
+    }
     printf("%x\n", reg);
 
     unsigned char data[4] = { 0x12, 0x34, 0x56, 0x78 };
     set_reg_byte_stream("192.168.10.16", 0xffffff3c /* user area */, data, sizeof(data));
+    reg = get_reg_int("192.168.10.16", 0xffffff3c);
+    if (reg < 0) {
+        fprintf(stderr, "error");
+    }
+    printf("%x\n", reg);
 
+    set_reg_byte("192.168.10.16", 0xffffff3c, 0xfe);
     return 0;
 }
 #endif
