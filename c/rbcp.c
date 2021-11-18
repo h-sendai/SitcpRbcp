@@ -70,6 +70,51 @@ int open_rbcp(char *remote_ip)
     return sockfd;
 }
 
+int is_bus_error(struct sitcp_rbcp_header reply_header)
+{
+    if ((reply_header.cmd_flag & 0x01) == 1) {
+        fprintf(stderr, "sitcp rbcp reply header indicates bus error\n");
+        return 1;
+    }
+
+    return 0;
+}
+
+int diff_headers(struct sitcp_rbcp_header request_header, struct sitcp_rbcp_header reply_header)
+{
+    /* diff headers without request/ack bit in flag */
+
+    if (request_header.ver_type != reply_header.ver_type) {
+        fprintf(stderr, "ver_type does not match: request: 0x%02x, reply: 0x%02x\n",
+            request_header.ver_type, reply_header.ver_type);
+        return -1;
+    }
+
+    unsigned char reply_header_cmd_flag_without_ack = (reply_header.cmd_flag & 0xf0);
+
+    if (request_header.cmd_flag != reply_header_cmd_flag_without_ack) {
+        fprintf(stderr, "cmd_flag does not match: request: 0x%02x, reply: 0x%02x\n",
+            request_header.cmd_flag, reply_header.cmd_flag);
+        return -1;
+    }
+
+    return 0;
+}
+
+int byte_compare(unsigned char *buf0, unsigned char *buf1, int len)
+{
+    int rv = 0;
+    for (int i = 0; i < len; ++i) {
+        if (buf0[i] != buf1[i]) {
+            fprintf(stderr, "data mismatch at buf index: %d, request: 0x%c, reply: 0x%c\n",
+                i, buf0[i], buf1[i]);
+            rv = -1;
+        }
+    }
+
+    return rv;
+}
+
 int get_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *buf, int len)
 {
     int sockfd = open_rbcp(remote_ip);
@@ -104,8 +149,13 @@ int get_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *bu
         return -1;
     }
 
-    /* To Do */
-    /* error check here */
+    if (is_bus_error(rbcp_reply_header)) {
+        return -1;
+    }
+
+    if (diff_headers(rbcp_request_header, rbcp_reply_header) < 0) {
+        return -1;
+    }
 
     return 0;
 }
@@ -152,6 +202,18 @@ int set_reg_byte_stream(char *remote_ip, unsigned int address, unsigned char *bu
 
     /* To Do */
     /* error check here */
+    if (is_bus_error(rbcp_reply_header)) {
+        return -1;
+    }
+
+    if (diff_headers(rbcp_request_header, rbcp_reply_header) < 0) {
+        return -1;
+    }
+
+    if (byte_compare(buf, reply_data_buf, len) < 0) {
+        return -1;
+    }
+
     free(reply_data_buf);
 
     return 0;
@@ -237,19 +299,28 @@ int main(int argc, char *argv[])
         fprintf(stderr, "error");
         exit(1);
     }
-    printf("%x\n", reg);
+    fprintf(stderr, "%x\n", reg);
 
     unsigned char data[4] = { 0x12, 0x34, 0x56, 0x78 };
-    set_reg_byte_stream("192.168.10.16", 0xffffff3c /* user area */, data, sizeof(data));
+    if (set_reg_byte_stream("192.168.10.16", 0xffffff3c /* user area */, data, sizeof(data)) < 0) {
+        exit(1);
+    }
+        
     reg = get_reg_int("192.168.10.16", 0xffffff3c);
     if (reg < 0) {
         fprintf(stderr, "error");
     }
-    printf("%x\n", reg);
 
-    set_reg_byte("192.168.10.16", 0xffffff3c, 0xfe);
-    set_reg_short("192.168.10.16", 0xffffff3c, 0xfeed);
-    set_reg_int("192.168.10.16", 0xffffff3c, 0xfeedface);
+    if (set_reg_byte("192.168.10.16", 0xffffff3c, 0xfe) < 0) {
+        exit(1);
+    }
+    if (set_reg_short("192.168.10.16", 0xffffff3c, 0xfeed) < 0) {
+        exit(1);
+    }
+    if (set_reg_int("192.168.10.16", 0xffffff3c, 0xfeedface) < 0) {
+        exit(1);
+    }
+
     return 0;
 }
 #endif
