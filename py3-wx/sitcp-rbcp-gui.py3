@@ -58,6 +58,12 @@ class Sample(wx.Frame):
             print('%s %x %d %d' % (s, a, l, data))
             rbcp.write_register_f(ip_address, a, format[l], data)
 
+        # replace text 
+        # Replace(from, to, value)
+        # to replace whole string, from = 0, to = -1
+        #for (s, a, l, v) in register_info:
+        #    getattr(self, s).Replace(0, -1, '1000')
+
 #    def OnStart(self, event):
 #       request_id = 0x81234567 # Need MSB bit 1
 #                               # (valid request id 0x80000000 - 0xFFFFFFFF)
