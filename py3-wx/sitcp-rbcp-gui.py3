@@ -30,7 +30,7 @@ class Sample(wx.Frame):
         panel = wx.Panel(self, -1)
 
         sizer = wx.GridSizer(cols = 2, vgap = 0, hgap = 0)
-        y = 10
+
         for (s, a, l, v) in register_info:
             label = wx.StaticText(panel, -1, s)
             sizer.Add(label)
