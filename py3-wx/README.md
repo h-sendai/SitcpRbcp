@@ -11,7 +11,7 @@ yum install epel-release; yum install python36-wxpython4
 
 CentOS Stream 8:
 ```
-yum install epel; yum install python3-wxpython4
+yum install epel-release; yum install python3-wxpython4
 ```
 
 ## サンプルの動作
