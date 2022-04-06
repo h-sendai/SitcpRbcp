@@ -8,6 +8,7 @@ import socket
 import struct
 import wx
 import SitcpRbcp
+import datetime
 
 register_info = [
     # name                  addr length init_value
@@ -45,12 +46,20 @@ class Sample(wx.Frame):
 
         #self.Bind(wx.EVT_BUTTON, self.OnEnd,   id = putEnd.GetId())
 
+        self.statusbar = self.CreateStatusBar(1)
+        self.statusbar.SetStatusText('Start')
+
         self.Show(True)
     
+    def write_status(self, line):
+        now = datetime.datetime.now().strftime("%F %T")
+        self.statusbar.SetStatusText(now + ' ' + line)
+
     def OnExit(self, event):
         self.Close()
 
     def OnSend(self, event):
+        self.write_status('OnSend')
         rbcp = SitcpRbcp.SitcpRbcp()
         print('name address length value')
         for (s, a, l, v) in register_info:
@@ -63,6 +72,8 @@ class Sample(wx.Frame):
         # to replace whole string, from = 0, to = -1
         #for (s, a, l, v) in register_info:
         #    getattr(self, s).Replace(0, -1, '1000')
+
+        self.write_status('Send register data done')
 
 #    def OnStart(self, event):
 #       request_id = 0x81234567 # Need MSB bit 1
