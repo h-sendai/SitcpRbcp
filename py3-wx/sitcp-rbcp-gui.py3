@@ -26,29 +26,30 @@ format[4] = '>I'
 
 class Sample(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, title = "NUETRON DAQ", size = (400, 420))
+        wx.Frame.__init__(self, None, title = "NUETRON DAQ")
         panel = wx.Panel(self, -1)
 
+        sizer = wx.GridSizer(cols = 2, vgap = 0, hgap = 0)
         y = 10
         for (s, a, l, v) in register_info:
-            wx.StaticText(panel, -1, s, (10,  y))
-            setattr(self, s, wx.TextCtrl(panel, -1, v, (180, y), (120, -1), style = wx.ALIGN_RIGHT))
-            y += 30
+            label = wx.StaticText(panel, -1, s)
+            sizer.Add(label)
+            setattr(self, s, wx.TextCtrl(panel, id = wx.ID_ANY, size = (100, 20), 
+                value = v, style = wx.ALIGN_RIGHT))
+            box = getattr(self, s) 
+            sizer.Add(box)
 
-        putSend  = wx.Button(panel, -1,        'Send',  (180, 350), (80, 30))
-        exit     = wx.Button(panel, wx.ID_EXIT, '',     (270, 350), (80, 30))
-        #putStart = wx.Button(panel, -1,        'Start', (180, 380), (80, 30))
-        #putStop  = wx.Button(panel, -1,        'Stop',  (270, 380), (80, 30))
+        putSend  = wx.Button(panel, -1, 'Send')
+        exit     = wx.Button(panel, wx.ID_EXIT, '')
+        sizer.Add(putSend)
+        sizer.Add(exit)
         self.Bind(wx.EVT_BUTTON, self.OnSend,  id = putSend.GetId() )
         self.Bind(wx.EVT_BUTTON, self.OnExit,  id = wx.ID_EXIT      )
-        #self.Bind(wx.EVT_BUTTON, self.OnStart, id = putStart.GetId())
-        #self.Bind(wx.EVT_BUTTON, self.OnStop,  id = putStop.GetId() )
-
-        #self.Bind(wx.EVT_BUTTON, self.OnEnd,   id = putEnd.GetId())
 
         self.statusbar = self.CreateStatusBar(1)
         self.statusbar.SetStatusText('Start')
 
+        panel.SetSizer(sizer)
         self.Show(True)
     
     def write_status(self, line):
@@ -74,60 +75,6 @@ class Sample(wx.Frame):
         #    getattr(self, s).Replace(0, -1, '1000')
 
         self.write_status('Send register data done')
-
-#    def OnStart(self, event):
-#       request_id = 0x81234567 # Need MSB bit 1
-#                               # (valid request id 0x80000000 - 0xFFFFFFFF)
-#       sub_address = 0x0
-#       cmd_field1 = 0xaaaaffff # write list (cmd = 0xaa, cmd_type = 0xaa)
-#       cmd_field2 = 0x00000000 # don't care for write list
-#       request_packet = struct.pack('>IIII',
-#                           request_id,
-#                           sub_address,
-#                           cmd_field1,
-#                           cmd_field2
-#                        )
-#       request_packet += struct.pack('>I', 0xf)
-#       request_packet += struct.pack('>I', 0x1)
-#
-#       u = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-#       # need bind() to send from PC port 6007
-#       u.bind((my_ip_address, my_port))
-#       u.sendto(request_packet, (remote_ip_address, remote_port))
-#
-#       reply_packet = u.recvfrom(9000) # try to read 9000 bytes
-#       reply_data = reply_packet[0]   # recvfrom returns tuple (payload, (host, address))
-#
-#       u.close()
-
-#    def OnStop(self, event):
-#        request_id = 0x81234567 # Need MSB bit 1
-#                                # (valid request id 0x80000000 - 0xFFFFFFFF)
-#        sub_address = 0x0
-#        cmd_field1 = 0xaaaaffff # write list (cmd = 0xaa, cmd_type = 0xaa)
-#        cmd_field2 = 0x00000000 # don't care for write list
-#        request_packet = struct.pack('>IIII',
-#                            request_id,
-#                            sub_address,
-#                            cmd_field1,
-#                            cmd_field2
-#                         )
-#        request_packet += struct.pack('>I', 0xf)
-#        request_packet += struct.pack('>I', 0x0)
-#
-#        u = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-#        # need bind() to send from PC port 6007
-#        u.bind((my_ip_address, my_port))
-#        u.sendto(request_packet, (remote_ip_address, remote_port))
-#
-#        reply_packet = u.recvfrom(9000) # try to read 9000 bytes
-#        reply_data = reply_packet[0]   # recvfrom returns tuple (payload, (host, address))
-#
-#        u.close()
-
-#    def OnEnd(self, event):
-#        print 'end'
-#        pass
 
 def main():
     app = wx.App()
