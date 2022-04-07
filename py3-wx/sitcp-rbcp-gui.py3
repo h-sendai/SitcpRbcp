@@ -29,23 +29,34 @@ class Sample(wx.Frame):
         wx.Frame.__init__(self, None, title = "NUETRON DAQ")
         panel = wx.Panel(self, -1)
 
+        # layout
         sizer = wx.GridSizer(cols = 2, vgap = 0, hgap = 0)
 
-        for (s, a, l, v) in register_info:
-            label = wx.StaticText(panel, -1, s)
-            sizer.Add(label)
-            setattr(self, s, wx.TextCtrl(panel, id = wx.ID_ANY, size = (100, 20), 
-                value = v, style = wx.ALIGN_RIGHT))
-            box = getattr(self, s) 
-            sizer.Add(box)
+        # Create Data structure
+        # self.labels:    dict of StaticText objects. indexes are register name
+        # self.textctrls: dict of TextCtrl objects. indexes are register name
+        self.labels    = dict()
+        self.textctrls = dict()
+        for (n, a, l, v) in register_info:
+            # create labels and textctrls
+            self.labels[n]    = wx.StaticText(panel, id = wx.ID_ANY, label = n)
+            self.textctrls[n] = wx.TextCtrl(panel, id = wx.ID_ANY, size = (100, 20), value = v, style = wx.ALIGN_RIGHT)
 
+        for (n, a, l, v) in register_info:
+            sizer.Add(self.labels[n])
+            sizer.Add(self.textctrls[n])
+
+        # Create button and layout them
         putSend  = wx.Button(panel, -1, 'Send')
         exit     = wx.Button(panel, wx.ID_EXIT, '')
         sizer.Add(putSend)
         sizer.Add(exit)
+
+        # Assign methods to each buttons
         self.Bind(wx.EVT_BUTTON, self.OnSend,  id = putSend.GetId() )
         self.Bind(wx.EVT_BUTTON, self.OnExit,  id = wx.ID_EXIT      )
 
+        # Create Status bar
         self.statusbar = self.CreateStatusBar(1)
         self.statusbar.SetStatusText('Start')
 
@@ -63,9 +74,9 @@ class Sample(wx.Frame):
         self.write_status('OnSend')
         rbcp = SitcpRbcp.SitcpRbcp()
         print('name address length value')
-        for (s, a, l, v) in register_info:
-            data = int(getattr(self, s).GetValue(), 0)
-            print('%s %x %d %d' % (s, a, l, data))
+        for (n, a, l, v) in register_info:
+            data = int(self.textctrls[n].GetValue(), 0)
+            print('%s %x %d %d' % (n, a, l, data))
             rbcp.write_register_f(ip_address, a, format[l], data)
 
         # replace text 
