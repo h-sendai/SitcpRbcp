@@ -1,14 +1,19 @@
 #!/usr/bin/python3
 
+# based on
+# https://gist.github.com/driscollis/a42aecb379742d3cd150/
+
 import os
 import sys
 import time
 
 import socket
 import struct
-import wx
 import SitcpRbcp
 import datetime
+
+import wx
+import wx.lib.scrolledpanel as scrolled
 
 register_info = [
     # name                  addr length init_value
@@ -16,6 +21,13 @@ register_info = [
     ('user_area_1', 0xffffff3d, 1, '1'),
     ('user_area_2', 0xffffff3e, 1, '2'),
     ('user_area_3', 0xffffff3f, 1, '3'),
+    #('user_area_4', 0xffffff40, 1, '4'),
+    #('user_area_5', 0xffffff41, 1, '4'),
+    #('user_area_6', 0xffffff42, 1, '4'),
+    #('user_area_7', 0xffffff43, 1, '4'),
+    #('user_area_8', 0xffffff43, 1, '4'),
+    #('user_area_9', 0xffffff43, 1, '4'),
+    #('user_area_10', 0xffffff43, 1, '4'),
 ]
 
 ip_address = '192.168.10.16'
@@ -26,11 +38,16 @@ format[4] = '>I'
 
 class Sample(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, title = "NUETRON DAQ")
-        panel = wx.Panel(self, -1)
+        wx.Frame.__init__(self, None, wx.ID_ANY, title = "SiTCP RBCP GUI", size = (200, 300))
+        self.panel = wx.Panel(self, wx.ID_ANY)
 
         # layout
-        sizer = wx.GridSizer(cols = 2, vgap = 0, hgap = 0)
+        self.scrolled_panel = scrolled.ScrolledPanel(self.panel, -1,
+                              style = wx.TAB_TRAVERSAL|wx.SUNKEN_BORDER, name="panel1")
+
+        self.scrolled_panel.SetAutoLayout(1)
+        self.scrolled_panel.SetupScrolling()
+        self.spSizer = wx.BoxSizer(wx.VERTICAL)
 
         # Create Data structure
         # self.labels:    dict of StaticText objects. indexes are register name
@@ -39,29 +56,36 @@ class Sample(wx.Frame):
         self.textctrls = dict()
         for (n, a, l, v) in register_info:
             # create labels and textctrls
-            self.labels[n]    = wx.StaticText(panel, id = wx.ID_ANY, label = n)
-            self.textctrls[n] = wx.TextCtrl(panel, id = wx.ID_ANY, size = (100, 20), value = v, style = wx.ALIGN_RIGHT)
+            self.labels[n]    = wx.StaticText(self.scrolled_panel, id = wx.ID_ANY, label = n, size = (90, 30))
+            self.textctrls[n] = wx.TextCtrl(self.scrolled_panel, id = wx.ID_ANY, size = (90, 30), value = v, style = wx.ALIGN_RIGHT)
 
         for (n, a, l, v) in register_info:
-            sizer.Add(self.labels[n])
-            sizer.Add(self.textctrls[n])
+            v = wx.BoxSizer(wx.HORIZONTAL)
+            v.Add(self.labels[n],    0, wx.ALL|wx.EXPAND, 5)
+            v.Add(self.textctrls[n], 1, wx.ALL|wx.EXPAND, 5)
+            self.spSizer.Add(v)
+
+        self.scrolled_panel.SetSizer(self.spSizer)
 
         # Create button and layout them
-        putSend  = wx.Button(panel, -1, 'Send')
-        exit     = wx.Button(panel, wx.ID_EXIT, '')
-        sizer.Add(putSend)
-        sizer.Add(exit)
+        putSend  = wx.Button(self.panel, -1, 'Send')
+        # exit     = wx.Button(self.panel, wx.ID_EXIT, '')
 
         # Assign methods to each buttons
         self.Bind(wx.EVT_BUTTON, self.OnSend,  id = putSend.GetId() )
-        self.Bind(wx.EVT_BUTTON, self.OnExit,  id = wx.ID_EXIT      )
+        #self.Bind(wx.EVT_BUTTON, self.OnExit,  id = wx.ID_EXIT      )
+
+        panelSizer = wx.BoxSizer(wx.VERTICAL)
+        panelSizer.Add(self.scrolled_panel, 1, wx.EXPAND)
+        panelSizer.Add(putSend)
+        self.panel.SetSizer(panelSizer)
 
         # Create Status bar
         self.statusbar = self.CreateStatusBar(1)
-        self.statusbar.SetStatusText('Start')
+        self.statusbar.SetStatusText('Good Luck')
 
-        panel.SetSizer(sizer)
-        self.Show(True)
+        self.panel.SetSizer(panelSizer)
+        #self.Show(True)
     
     def write_status(self, line):
         now = datetime.datetime.now().strftime("%F %T")
@@ -88,8 +112,8 @@ class Sample(wx.Frame):
         self.write_status('Send register data done')
 
 def main():
-    app = wx.App()
-    Sample()
+    app = wx.App(False)
+    frame = Sample().Show()
     app.MainLoop()
 
 if __name__ == '__main__':
