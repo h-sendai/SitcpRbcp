@@ -126,7 +126,7 @@ https://extensions.libreoffice.org/en/extensions/show/apso-alternative-script-or
 なぜ
 Alternative Script Organizer for PythonをAPSOと略称するのか不明です。（注おわり）
 
-ASPOをセットするにはCalcで
+APSOをセットするにはCalcで
 
 Tools -> Extensions Manager -> Get more extension online ... -> 
 Firefox起動 -> pythonで検索 -> APSOがでるのでダウンロード ->
