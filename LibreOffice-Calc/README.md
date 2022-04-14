@@ -1,0 +1,1 @@
+# LibreOffice Calcを使ったGUIインターフェイス
