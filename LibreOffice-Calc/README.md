@@ -45,6 +45,13 @@ CentOS 7ではsitcp-rbcp-python2.ods、CentOS Stream 8ではsitcp-rbcp-python3.o
 LibreOffice CalcのpythonマクロはCentOS 7付属のものはpython2を、
 CentOS Stream 8のものはpython3を使うようなのでこのようにわけてあります。
 
+起動例:
+
+```
+user% cp somewhere/SitcpRbcp/LibreOffice-Calc/sitcp-rbcp-python2.ods .
+user% libreoffice --calc sitcp-rbpc-python2.ods
+```
+
 (注)アドレス0xffffff3c - 0xffffff3fはSiTCPライブラリで「ユーザー領域」
 として読み書きが自由にできるレジスタとなっています。
 「SiTCP説明書」https://www.sitcp.net/doc/SiTCP.pdf 29ページ
