@@ -29,6 +29,12 @@ yum -y install libreoffice-calc
 user% libreoffice --calc
 ```
 
+起動後に
+Tools -> Options -> LibreOffice -> Security -> [Macro Security ...] ボタン
+でSecurity LevelをMediumにセットしてください。次回からマクロを含んだ
+ファイルを開くとマクロを有効にするかどうかのダイアログがでるので有効に
+するを選んでください。
+
 ## ファイル名を指定してCalcを起動
 
 サンプルとして
