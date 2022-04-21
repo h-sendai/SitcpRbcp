@@ -1,5 +1,7 @@
 # LibreOffice Calc マクロ (Python)
 
+![screenshot](image/libreoffice-calc-rbcp.png)
+
 LibreOffice Calc (Excelのような表計算ソフト)のpythonマクロを使って
 SiTCP RBCPでレジスタの値をセットするプログラム。
 
