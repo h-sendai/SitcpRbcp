@@ -16,7 +16,7 @@ root# yum -y install libreoffice
 
 CentOS Stream 8:
 ```
-yum -y install libreoffice-calc
+root# yum -y install libreoffice-calc
 ```
 
 ## LibreOffice Calcの起動
