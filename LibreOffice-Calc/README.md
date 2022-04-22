@@ -19,6 +19,14 @@ CentOS Stream 8:
 yum -y install libreoffice-calc
 ```
 
+Ubuntu 2204 LTS:
+```
+LibreOfficeはデフォルトで入っている。pythonスクリプト
+を動かすために次のパッケージを追加インストールする。
+
+user% sudo apt install libreoffice-script-provider-python
+```
+
 ## LibreOffice Calcの起動
 
 デスクトップ環境のメニューバーからLibreOffice Calcを起動することも
