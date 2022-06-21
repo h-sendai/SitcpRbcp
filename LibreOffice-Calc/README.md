@@ -175,5 +175,10 @@ Tools -> Extensions Manager -> APSOをクリック -> Optionsボタン
 でEditor欄に記入します。
 
 埋め込みマクロをみるには
-Tools -> Macros -> Organaize python scripts
+Tools -> Macros -> Organize python scripts
 から行います（Organize python scrirptsはAPSOをセットアップ後に出現するメニューです）。
+
+埋め込みマクロを作成するには
+Tools -> Macros -> Organize python scripts
+から行います。ライブラリ的に使うモジュールにはpyで終わる名前をつけておきます（表示は
+pyが省かれます）。
