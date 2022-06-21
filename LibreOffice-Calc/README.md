@@ -15,6 +15,13 @@ CentOS 7:
 ```
 root# yum -y install libreoffice
 ```
+(注) LibreOffice Calcを起動して開くウインドウの1行目に
+File Edit View Insert Format Sheet Data Tools Window Help
+が出てこないときには
+```
+root# yum -y groupinstall 'Server with GUI'
+```
+を実行する。
 
 CentOS Stream 8:
 ```
