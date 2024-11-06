@@ -71,7 +71,7 @@ user% libreoffice --calc sitcp-rbpc-python2.ods
 
 (注)アドレス0xffffff3c - 0xffffff3fはSiTCPライブラリで「ユーザー領域」
 として読み書きが自由にできるレジスタとなっています。
-「SiTCP説明書」https://www.sitcp.net/doc/SiTCP.pdf 29ページ
+「SiTCP説明書」https://www.sitcp.net/doc/SiTCP.pdf#page=28 28、29ページ
 を参照。(注おわり)
 
 ## 使い方
