@@ -15,4 +15,5 @@ Read [py3](py3).
 
 ## SiTCP documents
 
-https://www.sitcp.net/ (operated by Bee Beans Technologies Co. Ltd)
+- https://www.sitcp.net/ (operated by Bee Beans Technologies Co. Ltd)
+- Register map: https://www.sitcp.net/doc/SiTCP.pdf#page=28
